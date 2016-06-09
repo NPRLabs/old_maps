@@ -1,6 +1,7 @@
 import argparse
 import requests
 import time
+import sys
 
 
 def setup_args():
@@ -14,10 +15,10 @@ def setup_args():
     group.add_argument('-r', '--reload_from_source', action='store_true')
     group.add_argument('-f', '--load_file', default='', dest='filename')
 
-    parser.add_argument('-c', '--call_sign', default='', dest='call_sign')
+    parser.add_argument('-c', '--call_sign', default='', dest='callsign')
     return parser
 
-def load_from_website(args, filename):
+def load_from_website(args, filename, callsign):
     stdout = (not filename) or filename == '-'
     print 'FILENAME'
     print filename
@@ -69,26 +70,36 @@ def load_from_website(args, filename):
     print r.url
     count = 0
     for line in r.iter_lines(chunk_size):
-        #  print (' '.join(line.split())).replace(' ', ',')
+        line = (' '.join(line.split())).replace(' ', ',')
         count += 1
         
         if line: 
             if stdout:
                 print line
             else:
-                f.write(line)
+                f.write(line + '\n')
         print 'Count:{}'.format(count)
         
     if not stdout:
         f.close()
 
 
+def query_file(filename, callsign):
+    f = open(filename, 'r')
+    for line in f:
+        if line:
+            for entry in filter(lambda l: callsign in l, line.split(',')):
+                if entry:
+                    sys.stdout.write(line)
 
 if __name__ == '__main__':
     parser = setup_args()
     args = parser.parse_args()
     if args.reload_from_source:
-        load_from_website(args, args.outfile)
+        load_from_website(args, args.outfile, args.callsign)
+    elif not args.filename:
+        filename = 'data/{}_data.txt'.format(args.which)
+        query_file(filename, args.callsign)
 
   
 
