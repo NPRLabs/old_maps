@@ -16,7 +16,10 @@ def setup_args():
     group.add_argument('-r', '--reload_from_source', action='store_true')
     group.add_argument('-f', '--load_file', default='', dest='filename')
 
-    parser.add_argument('-q', '--query', nargs=2, default='', dest='query')
+    group2 = parser.add_mutually_exclusive_group()
+    group2.add_argument('-q', '--query', nargs=2, default='', dest='query')
+    group2.add_argument('-l', '--listquery', nargs=2, default='', dest='listquery')
+
     return parser
 
 def format_line(line):
@@ -124,8 +127,14 @@ if __name__ == '__main__':
     if args.reload_from_source:
         load_from_website(args, args.outfile, args.callsign)
     elif not args.filename:
-        filename = 'data/{}_data.txt'.format(args.which)
-        query_file(filename, args.query[1],args.query[0])
+        if args.query:
+            print 'good'
+            filename = 'data/{}_data.txt'.format(args.which)
+            query_file(filename, args.query[1],args.query[0])
+        else: 
+            filename = 'data/{}_data.txt'.format(args.which)
+            query_file(filename, args.listquery[1],args.listquery[0])
+
 
   
 
