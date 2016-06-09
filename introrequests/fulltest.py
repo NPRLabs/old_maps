@@ -84,13 +84,20 @@ def load_from_website(args, filename, callsign):
         f.close()
 
 
-def query_file(filename, callsign):
+
+def query_file(filename, value, numbers):
     f = open(filename, 'r')
     for line in f:
         if line:
-            for entry in filter(lambda l: callsign in l, line.split(',')):
-                if entry:
-                    sys.stdout.write(line)
+#            for entry in filter(lambda l: callsign in l, line.split(',')):
+#                if entry:
+#                    sys.stdout.write(line)
+            l = line.split(',')
+            reduced = []
+            for n in numbers:
+                reduced.append(l[n])
+            if value == ''.join(reduced):
+                sys.stdout.write(line)
 
 if __name__ == '__main__':
     parser = setup_args()
@@ -99,7 +106,7 @@ if __name__ == '__main__':
         load_from_website(args, args.outfile, args.callsign)
     elif not args.filename:
         filename = 'data/{}_data.txt'.format(args.which)
-        query_file(filename, args.callsign)
+        query_file(filename, args.callsign, [1,2])
 
   
 
