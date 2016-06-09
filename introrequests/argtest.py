@@ -80,6 +80,8 @@ except SystemExit as err:
 
 
 
+print '\n\nTotal fails {}, Expected:{}'.format(failed_count, expected_failed_count)
+print 'Correct' if failed_count == expected_failed_count else 'incorrect'
 
 
 
