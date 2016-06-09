@@ -18,6 +18,13 @@ def setup_args():
     parser.add_argument('-c', '--call_sign', default='', dest='callsign')
     return parser
 
+def format_line(line):
+    
+        vals = line.split('|')
+        if not vals[0]:
+            vals.pop(0)
+        return ','.join(map(str.strip,vals))
+
 def load_from_website(args, filename, callsign):
     stdout = (not filename) or filename == '-'
     print 'FILENAME'
@@ -38,7 +45,7 @@ def load_from_website(args, filename, callsign):
     'facid':'',
     'asrn':'',
     'class':'',
-    'list':'3',
+    'list':'4',
     'ThisTab':'Results+to+This+Page%2FTab',
     'dist':'',
     'dlat2':'',
@@ -70,7 +77,9 @@ def load_from_website(args, filename, callsign):
     print r.url
     count = 0
     for line in r.iter_lines(chunk_size):
-        line = (' '.join(line.split())).replace(' ', ',')
+        
+        # the data is gross so we need to do this
+        line = format_line(line)
         count += 1
         
         if line: 
@@ -85,7 +94,7 @@ def load_from_website(args, filename, callsign):
 
 
 
-def query_file(filename, value, numbers):
+def query_file(filename, value, n):
     f = open(filename, 'r')
     for line in f:
         if line:
@@ -93,10 +102,9 @@ def query_file(filename, value, numbers):
 #                if entry:
 #                    sys.stdout.write(line)
             l = line.split(',')
-            reduced = []
-            for n in numbers:
-                reduced.append(l[n])
-            if value == ''.join(reduced):
+            print ' '.join(l[n].split())
+
+            if value == ' '.join(l[n].split()):
                 sys.stdout.write(line)
 
 if __name__ == '__main__':
@@ -106,7 +114,7 @@ if __name__ == '__main__':
         load_from_website(args, args.outfile, args.callsign)
     elif not args.filename:
         filename = 'data/{}_data.txt'.format(args.which)
-        query_file(filename, args.callsign, [1,2])
+        query_file(filename, args.callsign, 1)
 
   
 
