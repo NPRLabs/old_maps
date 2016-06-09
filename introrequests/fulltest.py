@@ -8,6 +8,7 @@ def setup_args():
 
 
     parser.add_argument('which', choices=['tv', 'am', 'fm'])
+    parser.add_argument('-o', '--output-file', default='', dest='outfile')
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-r', '--reload_from_source', action='store_true')
@@ -17,9 +18,12 @@ def setup_args():
     return parser
 
 def load_from_website(args, filename):
-    stdout = filename and filename != '-'
+    stdout = (not filename) or filename == '-'
+    print 'FILENAME'
+    print filename
     f = None
     if not stdout:
+        print 'yep'
         f = open(filename, 'wb')
 
     r = requests.get('https://api.github.com/events')
@@ -63,14 +67,18 @@ def load_from_website(args, filename):
     chunk_size = 1024
     r = requests.get(url, params=payload, stream=True)
     print r.url
+    count = 0
     for line in r.iter_lines(chunk_size):
         #  print (' '.join(line.split())).replace(' ', ',')
+        count += 1
+        
         if line: 
             if stdout:
                 print line
             else:
                 f.write(line)
-
+        print 'Count:{}'.format(count)
+        
     if not stdout:
         f.close()
 
@@ -80,7 +88,7 @@ if __name__ == '__main__':
     parser = setup_args()
     args = parser.parse_args()
     if args.reload_from_source:
-        load_from_website(args, args.filename)
+        load_from_website(args, args.outfile)
 
   
 
