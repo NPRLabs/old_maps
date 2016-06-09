@@ -2,6 +2,7 @@ import argparse
 import requests
 import time
 import sys
+import math
 
 
 def setup_args():
@@ -15,7 +16,7 @@ def setup_args():
     group.add_argument('-r', '--reload_from_source', action='store_true')
     group.add_argument('-f', '--load_file', default='', dest='filename')
 
-    parser.add_argument('-c', '--call_sign', default='', dest='callsign')
+    parser.add_argument('-q', '--query', nargs=2, default='', dest='query')
     return parser
 
 def format_line(line):
@@ -92,19 +93,29 @@ def load_from_website(args, filename, callsign):
     if not stdout:
         f.close()
 
+def call_q(line, value):
+    l = line.split(',')
+    return value.lower() == l[0].lower()
 
 
-def query_file(filename, value, n):
+def freq_q(line, value):
+    l = line.split(',')
+    return abs(float(value) - float(l[1].split()[0])) < .0001
+
+def query_file(filename, value, option):
     f = open(filename, 'r')
+    query_func = None
+    if option == 'callsign':
+        query_func = call_q
+    elif option == 'freq':
+        query_func = freq_q
+
     for line in f:
         if line:
 #            for entry in filter(lambda l: callsign in l, line.split(',')):
 #                if entry:
 #                    sys.stdout.write(line)
-            l = line.split(',')
-            print ' '.join(l[n].split())
-
-            if value == ' '.join(l[n].split()):
+            if query_func(line, value):
                 sys.stdout.write(line)
 
 if __name__ == '__main__':
@@ -114,7 +125,7 @@ if __name__ == '__main__':
         load_from_website(args, args.outfile, args.callsign)
     elif not args.filename:
         filename = 'data/{}_data.txt'.format(args.which)
-        query_file(filename, args.callsign, 1)
+        query_file(filename, args.query[1],args.query[0])
 
   
 
