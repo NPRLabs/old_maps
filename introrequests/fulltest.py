@@ -14,11 +14,12 @@ def setup_args():
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-r', '--reload_from_source', action='store_true')
-    group.add_argument('-f', '--load_file', default='', dest='filename')
+    group.add_argument('-s', '--load_file', default='', dest='filename')
 
     group2 = parser.add_mutually_exclusive_group()
     group2.add_argument('-q', '--query', nargs=2, default='', dest='query')
     group2.add_argument('-l', '--listquery', nargs=2, default='', dest='listquery')
+    group2.add_argument('-f', '--filter', help='1:field filter by 2: value it must be, 3:new filename', nargs=3, default='', dest='filt')
 
     return parser
 
@@ -105,6 +106,14 @@ def freq_q(line, value):
     l = line.split(',')
     return abs(float(value) - float(l[1].split()[0])) < .0001
 
+def type_q(line, value):
+    l = line.split(',')
+    return l[2] == value
+
+def lic_q(line, value):
+    l = line.split(',')
+    return l[4] == value
+
 def query_file(filename, value, option):
     f = open(filename, 'r')
     query_func = None
@@ -120,21 +129,57 @@ def query_file(filename, value, option):
 #                    sys.stdout.write(line)
             if query_func(line, value):
                 sys.stdout.write(line)
+                
+    f.close()
+
+def filter_by(src, dest, value, option):
+    f = open(src, 'r')
+    f2 = open(dest, 'w')
+    query_func = None
+    if option == 'callsign':
+        query_func = call_q
+    elif option == 'freq':
+        query_func = freq_q
+    elif option == 'type':
+        query_func = type_q
+    elif option == 'license':
+        query_func = lic_q
+
+    for line in f:
+        if line:
+#            for entry in filter(lambda l: callsign in l, line.split(',')):
+#                if entry:
+#                    sys.stdout.write(line)
+            if query_func(line, value):
+                f2.write(line)
+    f.close()
+    f2.close()
+
 
 if __name__ == '__main__':
     parser = setup_args()
     args = parser.parse_args()
     if args.reload_from_source:
         load_from_website(args, args.outfile, args.callsign)
-    elif not args.filename:
-        if args.query:
-            print 'good'
-            filename = 'data/{}_data.txt'.format(args.which)
-            query_file(filename, args.query[1],args.query[0])
-        else: 
-            filename = 'data/{}_data.txt'.format(args.which)
-            query_file(filename, args.listquery[1],args.listquery[0])
-
+    filename = None
+    if args.filename:
+        filename = args.filename
+    else:
+        filename = 'data/{}_data.txt'.format(args.which)
+    if args.query:
+        print 'good'
+        query_file(filename, args.query[1],args.query[0])
+    elif args.listquery:
+        fl = open(args.listquery[1], 'r')
+        print args.listquery
+        for line in fl:
+            print 'AAA{}AAA'.format(line)
+            print 'Query for: {}'.format(line)
+            query_file(filename, line.rstrip(), args.listquery[0])
+            print 
+    elif args.filt:
+        print args.filt
+        filter_by(filename, args.filt[2], args.filt[1], args.filt[0]) 
 
   
 
