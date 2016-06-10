@@ -11,10 +11,10 @@ c = db.cursor()
 #c.execute('''CREATE TABLE users 
 #             (id INTEGER PRIMARY KEY, name TEXT, phone TEXT, email TEXT unique, password TEXT)''')
 
-c.execute('''INSERT INTO users(name, phone, email, password)
-                            VALUES(?,?,?,?)''', ('gus','123','yes.txt','asdf'))
-
-print c.lastrowid
+c.execute('''SELECT id FROM users WHERE email=?''',('yes.txt2',))
+val = c.fetchone()[0]
+print 'type:{}'.format(type(val))
+print 'email:yes.txt2 id={}'.format(val);
 
 
 db.commit()
