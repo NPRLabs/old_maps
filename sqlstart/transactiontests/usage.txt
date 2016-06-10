@@ -1,0 +1,3 @@
+Quick tests on the sqlite3 api for python
+
+a commit is a transaction so, even if you don't use executemany, you still get "free time"
