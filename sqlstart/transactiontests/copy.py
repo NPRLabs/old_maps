@@ -1,4 +1,5 @@
 import sqlite3
+import sys
 
 
 db = sqlite3.connect('test.db')
@@ -6,7 +7,7 @@ db = sqlite3.connect('test.db')
 
 c = db.cursor()
 
-c.execute("SELECT * FROM execmany")
+c.execute("SELECT * FROM {}".format(sys.argv[1]))
 print c.fetchall()
 
 

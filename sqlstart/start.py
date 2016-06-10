@@ -6,16 +6,16 @@ db = sqlite3.connect('test.db')
 
 c = db.cursor()
 
-# create the first table
-
-#c.execute('''CREATE TABLE users 
-#             (id INTEGER PRIMARY KEY, name TEXT, phone TEXT, email TEXT unique, password TEXT)''')
-
-c.execute('''INSERT INTO users(name, phone, email, password)
-                            VALUES(?,?,?,?)''', ('gus','123','yes.txt','asdf'))
+'''
 
 print c.lastrowid
+'''
 
-
+c.execute('''CREATE TABLE execmany
+             (id INTEGER PRIMARY KEY, name TEXT, phone TEXT, email TEXT, password TEXT)''')
+c.execute('''CREATE TABLE onecommit
+             (id INTEGER PRIMARY KEY, name TEXT, phone TEXT, email TEXT, password TEXT)''')
+c.execute('''CREATE TABLE multcommits 
+             (id INTEGER PRIMARY KEY, name TEXT, phone TEXT, email TEXT, password TEXT)''')
 db.commit()
 db.close()
