@@ -25,13 +25,17 @@ When we do precomputing (how will it be stored), the data is going to increase s
         other than that, right now need to make sure python is extensible 
         to that and also work on more filtering and updating and what not
         
+        what and HOW to store the information
+        
                 
 
 Need to think about the flow of updating
 
 1. at some predetermined time, redownload the data ->
-2. filter it to contain the data we want -.
-3.1 if using database, then     
+2. filter it to contain the data we want this is going to be done on python->
+3.1 if using database, then SELECT and UPDATE or INSERT is easy as pie. I think the database makes it really extensible and great
+    so this means after the filtering we can select on the identifying information
+    for updates and 
     
     
 -   most likely the precomputing will be done in a separate module, 
