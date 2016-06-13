@@ -81,18 +81,54 @@ def line_read(line, typ):
                 output.append(int(entry))
             elif i in (18, 22):
                 output.append(lat_to_real(entry, l[i + 1], l[i + 2], l[i + 3]))
-            elif i in [5,7,19,20,21,23,24,25]  or entry[0] == '\n':
+            elif i in [19,20,21,23,24,25]  or entry[0] == '\n':
                 continue
             else:
                 output.append(entry)
+        output.append(None)
+    if typ == 'am':
+        for i, entry in enumerate(l):
+            if i in [3, 14, 15, 16]:
+                continue
+            elif entry == '-':
+                output.append(None)
+            elif i in [1,13,27,28,29]:
+                output.append(float(entry.split()[0]))
+            elif i in [17, 30]:
+                output.append(int(entry))
+            elif i in (18, 22):
+                output.append(lat_to_real(entry, l[i + 1], l[i + 2], l[i + 3]))
+            elif i in [19,20,21,23,24,25]:
+                continue
+            else:
+                output.append(entry)
+    if typ == 'tv':
+        for i, entry in enumerate(l):
+            if i in [5, 7]:
+                continue
+            elif entry[0] == '-':
+                output.append(None)
+            elif i in [1,13,14,15,16,27,28,29,30,31,35]:
+                output.append(float(entry.split()[0]))
+            elif i in [3, 17]:
+                output.append(int(entry))
+            elif i in (18, 22):
+                output.append(lat_to_real(entry, l[i + 1], l[i + 2], l[i + 3]))
+            elif i in [5,7,19,20,21,23,24,25]:
+                continue
+            else:
+                output.append(entry)
+        output.append(None)
     #deal with org
-    output.append(None)
     o = tuple(output)
     print o
     return o
-sql ='''INSERT INTO fm VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
 
-def insert_list(l):
+fm_sql ='''INSERT INTO fm VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
+#am_sql ='''INSERT INTO am VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
+am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*22 + '?')
+
+def insert_list(l, sql):
     db = sqlite3.connect('fcc.db')
     c = db.cursor()
     c.executemany(sql,
@@ -113,14 +149,14 @@ def query_file(filename, value, option):
     print list_to_insert
     for i, line in enumerate(f):
         if line:
-            list_to_insert.append(line_read(line, 'fm'))
+            list_to_insert.append(line_read(line, 'am'))
             if i % 10000 == 0 and i > 0:
                 print i
                 print list_to_insert
-                insert_list(list_to_insert)
+                insert_list(list_to_insert, am_sql)
                 list_to_insert = []
             
-    insert_list(list_to_insert)
+    insert_list(list_to_insert, am_sql)
     f.close()
 
 if __name__ == '__main__':
