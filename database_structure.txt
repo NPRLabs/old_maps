@@ -1,5 +1,8 @@
 3 tables:
 
+
+Selects should be DISTINCT
+
 fm
 id INTEGER PRIMARY KEY, callsign TEXT, da TEXT, channel TEXT, class TEXT, 
 service TEXT, 
