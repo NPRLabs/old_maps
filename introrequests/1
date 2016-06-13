@@ -160,7 +160,7 @@ if __name__ == '__main__':
     parser = setup_args()
     args = parser.parse_args()
     if args.reload_from_source:
-        load_from_website(args, args.outfile, None)
+        load_from_website(args, args.outfile, args.callsign)
     filename = None
     if args.filename:
         filename = args.filename

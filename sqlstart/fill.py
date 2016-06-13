@@ -6,7 +6,7 @@ import requests
 import time
 import sys
 import math
-
+'''
 fm_defaults = { 'callsign' : None, 'da' : 'ND', 'channel' : None, 'class' : None,
                 'service' : None, 'freq' : None, 'status' : None, 'city' : None, 
                 'state' : None, 'country' : None, 'fn' : None, 'fid' : None, 
@@ -28,6 +28,7 @@ tv_defaults = { 'callsign' : None, 'da' : 'ND', 'channel' : None, 'tvzone' : Non
                 'rcamlsl' : None, 'polar' : None, 'daid' : None, 'dapr' : None, 'asrn' : None,
                 'h' : None, 'appid' : None, 'dmi' : None, 'dkm' : None, 'ddeg' : None, 
                 'virtchan' : None,'org' : None }
+'''
 def execmany():
     db = sqlite3.connect('test.db')
     c = db.cursor()
@@ -62,50 +63,43 @@ def format_line(line):
         return ','.join(map(str.strip,vals))
 
 
-def call_q(line, value):
-    l = line.split(',')
-    return value.lower() == l[0].lower()
-
-
-def freq_q(line, value):
-    l = line.split(',')
-    return abs(float(value) - float(l[1].split()[0])) < .0001
-
-def type_q(line, value):
-    l = line.split(',')
-    return l[2] == value
-
-def lic_q(line, value):
-    l = line.split(',')
-    return l[4] == value
-
 def lat_to_real(hem, deg, minutes, secs):
-    return (float(deg) + float(minutes) + float(secs))*(-1 if hem in ('W', 'S') else 1)
+    return (float(deg) + float(minutes)/60.0 + float(secs)/3600.0)*(-1 if hem in ('W', 'S') else 1)
 
 def line_read(line, typ):
-    print line
     l = line.split('|')
-    output = []
+    output = [None]
     if typ == 'fm':
         for i, entry in enumerate(l):
-            if entry[0] == '-':
+            if i in [5, 7]:
+                continue
+            elif entry[0] == '-':
                 output.append(None)
             elif i in [1,13,14,15,16,27,28,29,30,31,35]:
-                print entry
                 output.append(float(entry.split()[0]))
             elif i in [3, 17]:
                 output.append(int(entry))
             elif i in (18, 22):
                 output.append(lat_to_real(entry, l[i + 1], l[i + 2], l[i + 3]))
-            elif i in [19,20,21,23,24,25]:
+            elif i in [5,7,19,20,21,23,24,25]  or entry[0] == '\n':
                 continue
             else:
                 output.append(entry)
     #deal with org
     output.append(None)
+    o = tuple(output)
+    print o
+    return o
+sql ='''INSERT INTO fm VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
 
-    return output
-                
+def insert_list(l):
+    db = sqlite3.connect('fcc.db')
+    c = db.cursor()
+    c.executemany(sql,
+            l)
+    db.commit()
+    db.close()
+
 
 def query_file(filename, value, option):
     f = open(filename, 'r')
@@ -116,35 +110,18 @@ def query_file(filename, value, option):
         query_func = freq_q
 
     list_to_insert = []
+    print list_to_insert
     for i, line in enumerate(f):
         if line:
-            #if query_func(line, value):
-               print line_read(line, 'fm')
+            list_to_insert.append(line_read(line, 'fm'))
+            if i % 10000 == 0 and i > 0:
+                print i
+                print list_to_insert
+                insert_list(list_to_insert)
+                list_to_insert = []
+            
+    insert_list(list_to_insert)
     f.close()
-
-def filter_by(src, dest, value, option):
-    f = open(src, 'r')
-    f2 = open(dest, 'w')
-    query_func = None
-    if option == 'callsign':
-        query_func = call_q
-    elif option == 'freq':
-        query_func = freq_q
-    elif option == 'type':
-        query_func = type_q
-    elif option == 'license':
-        query_func = lic_q
-
-    for line in f:
-        if line:
-#            for entry in filter(lambda l: callsign in l, line.split(',')):
-#                if entry:
-#                    sys.stdout.write(line)
-            if query_func(line, value):
-                f2.write(line)
-    f.close()
-    f2.close()
-
 
 if __name__ == '__main__':
     parser = setup_args()
