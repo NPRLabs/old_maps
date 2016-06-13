@@ -1,0 +1,138 @@
+AM Query  - Text and Pipe-Delimited Output Key
+
+-Callsign
+-Frequency
+-Service
+-Directional Antenna or NonDirectional
+-Hours of Operation for this record - Daytime, Nighttime, or Unlimited
+-Domestic (U.S.) Station Class
+-International Station Class
+-FM Status
+-City
+-State
+-Country
+-File Number (Application, Construction Permit or License)
+-Power
+-Facility ID Number (unique to each station)
+-N (North) or S (South) Latitude
+-Degrees Latitude
+-Minutes Latitude
+-Seconds Latitude
+-W (West) or (E) East Longitude
+-Degrees Longitude
+-Minutes Longitude
+-Seconds Longitude
+-Licensee or Permittee
+-Kilometers distant (radius) from entered latitude, longitude
+-Miles distant (radius) from entered latitude, longitude
+-Azimuth, looking from center Lat, Lon to this record's Lat, Lon
+-Application ID number (from CDBS database)***
+-org
+
+
+FM Query  - Text and Pipe-Delimited Output- Ke-y
+
+-Callsign
+-Frequency
+-Service
+-Channel
+-Directional Antenna (DA) or NonDirectional (ND)
+-FM Station Class
+-FM Status
+-City
+-State
+-Country
+-File Number (Application, Construction Permit or License) or Docket Number (Rulemaking)
+-Effective Radiated Power -- horizontally polarized  (maximum)
+-Effective Radiated Power -- vertically polarized  (maximum)
+-Antenna Height Above Average Terrain (HAAT) -- horizontal polarization
+-Antenna Height Above Average Terrain (HAAT) -- vertical polarization
+-Facility ID Number (unique to each station)
+-N (North) or S (South) Latitude
+-Degrees Latitude
+-Minutes Latitude
+-Seconds Latitude
+-W (West) or (E) East Longitude
+-Degrees Longitude
+-Minutes Longitude
+-Seconds Longitude
+-Licensee or Permittee
+-Kilometers distant (radius) from entered latitude, longitude
+-Miles distant (radius) from entered latitude, longitude
+-Azimuth, looking from center Lat, Lon to this record's Lat, Lon
+-Antenna Radiation Center Above Mean Sea Level (RCAMSL) - Horizontally Polarized - meters  *
+-Antenna Radiation Center Above Mean Sea Level (RCAMSL) - Vertically Polarized - meters    *
+-Directional Antenna ID Number                                                             * **
+-Directional Antenna Pattern Rotation (degrees)                                            *
+-Antenna Structure Registration Number
+-Height of antenna radiation center above ground level (maximum) (physical center of the antenna)
+-Application ID number (from CDBS database)***                                                      *
+
+
+TV Query -- Text and Pipe-Delimited Output Key
+
+-Callsign
+(Not used for TV)
+-Service
+-Channel
+-Directional Antenna (DA) or NonDirectional (ND)
+Frequency Offset
+-TV Zone
+(Not Used for TV)
+-TV Status
+-City
+-State
+-Country
+-File Number (Application, Construction Permit or License) or Docket Number (Rulemaking)
+-Effective Radiated Power (kW)
+(Not Used for TV)
+-Antenna Height Above Average Terrain (HAAT)
+(Not used for TV)
+-Facility ID Number (unique to each station)
+-N (North) or S (South) Latitude
+-Degrees Latitude
+-M-inutes Latitude
+-Seconds Latitude
+-W (West) or (E) East Longitude
+-Degrees Longitude
+-Minutes Longitude
+-Seconds Longitude
+-Licensee or Permittee
+-Kilometers distant (radius) from entered latitude, longitude
+-Miles distant (radius) from entered latitude, longitude
+-Azimuth, looking from center Lat, Lon to this record's Lat, Lon
+-Height of Antenna Radiation Center Above Mean Sea Level (RCAMSL) *
+-Polarization (Horizontal, Circular, Elliptical)                  *
+-Directional Antenna ID Number                                    * **
+-Directional Antenna Pattern Rotation (degrees)                   *
+-Antenna Structure Registration Number                            *
+-Antenna Radiation Center Height Above Ground Level               #
+-Application ID number (from CDBS database)                       ##
+-DTV Virtual Channel (channel number the viewer sees)             ###     
+
+
+*   Field added May 12, 2003
+
+#   Field added October 23, 2008
+
+##  Field added June 3, 2010
+
+### Field added January 25, 2012 
+
+**  FM and TV directional antenna pattern data may be retrieved at
+   http://www.fcc.gov/mb/databases/querydata/da_ant_pattern.txt
+   The Directional Antenna ID number is the first / leftmost field in
+   this database, followed by azimuth | relative field value pairs.
+   Please note that patterns in this data file are NOT rotated: you
+   must apply any indicated clockwise rotation.
+
+   ERP = ERP (maximum) times the [(relative field value) squared]
+
+
+
+
+
+
+
+
+
