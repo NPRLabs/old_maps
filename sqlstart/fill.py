@@ -32,7 +32,9 @@ tv_defaults = { 'callsign' : None, 'da' : 'ND', 'channel' : None, 'tvzone' : Non
 def execmany():
     db = sqlite3.connect('test.db')
     c = db.cursor()
-    c.executemany('''INSERT INTO execmany(name, phone, email, password) VALUES(?,?,?,?)''',rand_vals())
+
+    #c.executemany('''INSERT INTO execmany(name, phone, email, password) VALUES(?,?,?,?)''',rand_vals())
+    
     db.commit()
     db.close()
 
@@ -73,10 +75,14 @@ def line_read(line, typ):
         for i, entry in enumerate(l):
             if i in [5, 7]:
                 continue
-            elif entry[0] == '-':
+            elif entry == '-':
                 output.append(None)
             elif i in [1,13,14,15,16,27,28,29,30,31,35]:
-                output.append(float(entry.split()[0]))
+                e = entry.split()
+                if e[0] == '-':
+                    output.append(None)
+                else:
+                    output.append(float(entry.split()[0]))
             elif i in [3, 17]:
                 output.append(int(entry))
             elif i in (18, 22):
@@ -88,12 +94,16 @@ def line_read(line, typ):
         output.append(None)
     if typ == 'am':
         for i, entry in enumerate(l):
-            if i in [3, 14, 15, 16]:
+            if i in [3, 14, 15, 16] or entry == '\n':
                 continue
             elif entry == '-':
                 output.append(None)
             elif i in [1,13,27,28,29]:
-                output.append(float(entry.split()[0]))
+                e = entry.split()
+                if e[0] == '-' or entry == '':
+                    output.append(None)
+                else:
+                    output.append(float(entry.split()[0]))
             elif i in [17, 30]:
                 output.append(int(entry))
             elif i in (18, 22):
@@ -104,17 +114,22 @@ def line_read(line, typ):
                 output.append(entry)
     if typ == 'tv':
         for i, entry in enumerate(l):
-            if i in [5, 7]:
+            if i in [1, 7, 14, 16] or entry == '\n':
                 continue
-            elif entry[0] == '-':
+            elif entry == '-':
                 output.append(None)
-            elif i in [1,13,14,15,16,27,28,29,30,31,35]:
-                output.append(float(entry.split()[0]))
+            elif i in [13,14,15,16,27,28,29,30,35]:
+                e = entry.split()
+                print e
+                if entry == '' or e[0] == '-' :
+                    output.append(None)
+                else:
+                    output.append(float(entry.split()[0]))
             elif i in [3, 17]:
                 output.append(int(entry))
             elif i in (18, 22):
                 output.append(lat_to_real(entry, l[i + 1], l[i + 2], l[i + 3]))
-            elif i in [5,7,19,20,21,23,24,25]:
+            elif i in [19,20,21,23,24,25]:
                 continue
             else:
                 output.append(entry)
@@ -124,13 +139,16 @@ def line_read(line, typ):
     print o
     return o
 
-fm_sql ='''INSERT INTO fm VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
-#am_sql ='''INSERT INTO am VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
-am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*22 + '?')
+fm_sql ='''INSERT INTO fm VALUES({})'''.format('?,'*30 + '?')
+am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*21 + '?')
+tv_sql = '''INSERT OR IGNORE INTO tv VALUES({})'''.format('?,'*29 + '?')
 
 def insert_list(l, sql):
     db = sqlite3.connect('fcc.db')
     c = db.cursor()
+   # for e in l:
+    #    print e
+    #    c.execute(sql,e)
     c.executemany(sql,
             l)
     db.commit()
@@ -149,14 +167,12 @@ def query_file(filename, value, option):
     print list_to_insert
     for i, line in enumerate(f):
         if line:
-            list_to_insert.append(line_read(line, 'am'))
+            list_to_insert.append(line_read(line, 'tv'))
             if i % 10000 == 0 and i > 0:
-                print i
-                print list_to_insert
-                insert_list(list_to_insert, am_sql)
+                insert_list(list_to_insert, tv_sql)
                 list_to_insert = []
             
-    insert_list(list_to_insert, am_sql)
+    insert_list(list_to_insert, tv_sql)
     f.close()
 
 if __name__ == '__main__':

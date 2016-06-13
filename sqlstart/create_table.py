@@ -13,12 +13,12 @@ print c.lastrowid
 
 c.execute('''CREATE TABLE fm
             (id INTEGER PRIMARY KEY, callsign TEXT, freq REAL, service TEXT, channel TEXT, da TEXT, 
-                class TEXT, status TEXT, city TEXT, state TEXT, country TEXT, fn TEXT UNIQUE, 
-                erph REAL, erpv REAL, haath REAL, haatv REAL, fid INTEGER UNIQUE, lat REAL, 
+                class TEXT, status TEXT, city TEXT, state TEXT, country TEXT, fn TEXT, 
+                erph REAL, erpv REAL, haath REAL, haatv REAL, fid INTEGER, lat REAL, 
                 long REAL, name TEXT, dmi REAL, dkm REAL, ddeg REAL, 
                 rcamslh REAL, rcamslv REAL, daid REAL, dapr REAL, asrn REAL, 
                 h REAL, appid INTEGER, 
-                org INTEGER
+                org INTEGER, UNIQUE(fn, fid, appid)
             )''')
 
 c.execute('''CREATE TABLE am
@@ -30,13 +30,13 @@ c.execute('''CREATE TABLE am
             )''')
 
 c.execute('''CREATE TABLE tv
-            (id INTEGER PRIMARY KEY, callsign TEXT, service TEXT, channel TEXT, da TEXT, freqoff REAL, 
+            (id INTEGER PRIMARY KEY, callsign TEXT, service TEXT, channel TEXT, da TEXT, freqoff TEXT, 
                 tvzone TEXT, tvstatus TEXT, city TEXT, state TEXT, 
-                country TEXT, fn TEXT, erp REAL, haat REAL, fid INTEGER UNIQUE, lat REAL, 
+                country TEXT, fn TEXT, erp REAL, haat REAL, fid INTEGER, lat REAL, 
                 long REAL, name TEXT, dmi REAL, dkm REAL, ddeg REAL, rcamsl REAL, 
                 polar TEXT, daid REAL, dapr REAL, asrn REAL, 
                 h REAL, appid INTEGER, virtchan INTEGER,
-                org INTEGER
+                org INTEGER, UNIQUE(fid, fn, appid)
             )''')
 
 
