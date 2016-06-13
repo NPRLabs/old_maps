@@ -12,28 +12,30 @@ print c.lastrowid
 '''
 
 c.execute('''CREATE TABLE fm
-            (id INTEGER PRIMARY KEY, callsign TEXT, da TEXT, channel TEXT, class TEXT, service TEXT, 
-                freq REAL, status TEXT, city TEXT, state TEXT, country TEXT, fn TEXT, 
-                fid INTEGER, erph REAL, erpv REAL, haath REAL, haatv REAL, lat REAL, 
-                long REAL, name TEXT, rcamslh REAL, rcamslv REAL, daid REAL, dapr REAL, asrn REAL, 
-                h REAL, appid INTEGER, dmi REAL, dkm REAL, ddeg REAL,
+            (id INTEGER PRIMARY KEY, callsign TEXT, freq REAL, service TEXT, channel TEXT, da TEXT, 
+                class TEXT, status TEXT, city TEXT, state TEXT, country TEXT, fn TEXT UNIQUE, 
+                erph REAL, erpv REAL, haath REAL, haatv REAL, fid INTEGER UNIQUE, lat REAL, 
+                long REAL, name TEXT, dmi REAL, dkm REAL, ddeg REAL, 
+                rcamslh REAL, rcamslv REAL, daid REAL, dapr REAL, asrn REAL, 
+                h REAL, appid INTEGER, 
                 org INTEGER
             )''')
 
 c.execute('''CREATE TABLE am
-            (id INTEGER PRIMARY KEY, callsign TEXT, da TEXT, usclass TEXT, iclass TEXT, 
-                service TEXT, hours TEXT, freq REAL, status TEXT, city TEXT, state TEXT, 
-                country TEXT, fn TEXT, fid INTEGER, power REAL, lat REAL, long REAL, 
-                name TEXT, appid INTEGER, dmi REAL, dkm REAL, ddeg REAL,
-                org INTEGER
+            (id INTEGER PRIMARY KEY, callsign TEXT, freq REAL, service TEXT, da TEXT, hours TEXT, 
+                usclass TEXT, iclass TEXT, status TEXT, city TEXT, state TEXT, 
+                country TEXT, fn TEXT, power REAL, fid INTEGER, lat REAL, long REAL, 
+                name TEXT, dmi REAL, dkm REAL, ddeg REAL, appid INTEGER
+                org INTEGER, UNIQUE(hours, fid, da)
             )''')
 
 c.execute('''CREATE TABLE tv
-            (id INTEGER PRIMARY KEY, callsign TEXT, da TEXT, channel TEXT, tvzone TEXT, 
-                tvstatus TEXT, service TEXT, freqoff REAL, status TEXT, city TEXT, state TEXT, 
-                country TEXT, fn TEXT, fid INTEGER, erp REAL, haat REAL, lat REAL, 
-                long REAL, name TEXT, rcamsl REAL, polar TEXT, daid REAL, dapr REAL, asrn REAL, 
-                h REAL, appid INTEGER, dmi REAL, dkm REAL, ddeg REAL, virtchan INTEGER,
+            (id INTEGER PRIMARY KEY, callsign TEXT, service TEXT, channel TEXT, da TEXT, freqoff REAL, 
+                tvzone TEXT, tvstatus TEXT, city TEXT, state TEXT, 
+                country TEXT, fn TEXT, erp REAL, haat REAL, fid INTEGER UNIQUE, lat REAL, 
+                long REAL, name TEXT, dmi REAL, dkm REAL, ddeg REAL, rcamsl REAL, 
+                polar TEXT, daid REAL, dapr REAL, asrn REAL, 
+                h REAL, appid INTEGER, virtchan INTEGER,
                 org INTEGER
             )''')
 
