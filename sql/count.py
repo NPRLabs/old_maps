@@ -27,5 +27,11 @@ print c.fetchall()
 '''for row in c.execute("SELECT * FROM tv"):
     print row
 '''
+'''
+c.execute("SELECT * FROM {}".format(sys.argv[1]))
+for i in c.fetchall():
+    if i[0] > 37500 and i[0] < 40000:
+        print i
+        '''
 db.commit()
 db.close()
