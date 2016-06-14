@@ -1,0 +1,31 @@
+import sqlite3
+import sys
+import random
+import argparse
+import requests
+import time
+import sys
+import math
+'''
+fm_defaults = { 'callsign' : None, 'da' : 'ND', 'channel' : None, 'class' : None,
+                'service' : None, 'freq' : None, 'status' : None, 'city' : None, 
+                'state' : None, 'country' : None, 'fn' : None, 'fid' : None, 
+                'erph' : None, 'erpv' : None, 'haath' : None, 'haatv' : None,
+                'lat' : None, 'long' : None, 'name' : None, 'rcamlslh' : None,
+                'rcamlslv' : None, 'daid' : None, 'dapr' : None, 'asrn' : None,
+                'h' : None, 'appid' : None, 'dmi' : None, 'dkm' : None, 'ddeg' : None, 'org' : None }
+
+am_defaults = { 'callsign' : None, 'da' : 'ND', 'usclass' : None, 'iclass' : None,
+                'service' : None, 'hours' : None, 'freq' : None, 'status' : None, 'city' : None, 
+                'state' : None, 'country' : None, 'fn' : None, 'fid' : None, 
+                'power' : None,'lat' : None, 'long' : None, 'name' : None,
+                'appid' : None, 'dmi' : None, 'dkm' : None, 'ddeg' : None, 'org' : None }
+
+tv_defaults = { 'callsign' : None, 'da' : 'ND', 'channel' : None, 'tvzone' : None, 'tvstatus' : None,
+                'service' : None, 'freqoff' : None, 'status' : None, 'city' : None, 
+                'state' : None, 'country' : None, 'fn' : None, 'fid' : None, 
+                'erp' : None, 'haat' : None, 'lat' : None, 'long' : None, 'name' : None, 
+                'rcamlsl' : None, 'polar' : None, 'daid' : None, 'dapr' : None, 'asrn' : None,
+                'h' : None, 'appid' : None, 'dmi' : None, 'dkm' : None, 'ddeg' : None, 
+                'virtchan' : None,'org' : None }
+'''
