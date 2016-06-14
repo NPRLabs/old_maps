@@ -17,7 +17,7 @@ c.execute('''CREATE TABLE fm
                 erph REAL, erpv REAL, haath REAL, haatv REAL, fid INTEGER, lat REAL, 
                 long REAL, name TEXT, dmi REAL, dkm REAL, ddeg REAL, 
                 rcamslh REAL, rcamslv REAL, daid REAL, dapr REAL, asrn REAL, 
-                h REAL, appid INTEGER UNIQUE ON CONFLICT IGNORE,
+                h REAL, appid INTEGER,
                 org INTEGER
             )''')
 
@@ -26,7 +26,7 @@ c.execute('''CREATE TABLE am
                 usclass TEXT, iclass TEXT, status TEXT, city TEXT, state TEXT, 
                 country TEXT, fn TEXT, power REAL, fid INTEGER, lat REAL, long REAL, 
                 name TEXT, dmi REAL, dkm REAL, ddeg REAL, appid INTEGER              
-                org INTEGER, UNIQUE(appid, hours, da, power) ON CONFLICT IGNORE
+                org INTEGER
 
             )''')
 
@@ -38,7 +38,7 @@ c.execute('''CREATE TABLE tv
                 long REAL, name TEXT, dmi REAL, dkm REAL, ddeg REAL, rcamsl REAL, 
                 polar TEXT, daid REAL, dapr REAL, asrn REAL, 
                 h REAL, appid INTEGER, virtchan INTEGER,
-                org INTEGER, UNIQUE(fid, fn, appid)
+                org INTEGER
             )''')
 
 

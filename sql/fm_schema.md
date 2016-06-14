@@ -28,7 +28,7 @@
 | appid    | INTEGER | application id, often same as other stations in one org
 | org      | INTEGER | used to mark similar orgs, unused now
 
-#####Uniqueness:
+#####POSSIBLE Uniqueness:
 appid is UNIQUE. There are a few (2) instances where appid is NOT unique among 
 entries, but these are FS services in similar areas. Currently ON CONFLICT is set to ignore, as FM services are listed first
 

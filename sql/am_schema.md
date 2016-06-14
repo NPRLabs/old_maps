@@ -23,7 +23,7 @@
 | appid    | INTEGER | application id, often same as other stations in one org
 | org      | INTEGER | used to mark similar orgs, unused now
 
-#####Uniqueness:
+#####POSSIBLE Uniqueness:
 (appid, hours, da, power) is UNIQUE. There are a few (2) instances where this tuple is NOT unique among entries, but these are errors in the fcc database. Currently, there is only one conflict for (appid, hours, da), but they have different power. Currently ON CONFLICT is set to ignore, as FM services are listed first
 
 

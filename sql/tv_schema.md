@@ -38,7 +38,8 @@
 | virtchan | INTEGER | channel the user sees
 | org      | INTEGER | used to mark similar orgs, unused now
 
-TODO UNIQUENESS
+#####POSSIBLE Uniqueness:
+We are storing everything
 
 
 
