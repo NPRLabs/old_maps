@@ -107,8 +107,8 @@ def line_read(line, typ):
     o = tuple(output)
     return o
 
-fm_sql = '''INSERT OR IGNORE INTO fm VALUES({})'''.format('?,'*30 + '?')
-am_sql = '''INSERT OR IGNORE INTO am VALUES({})'''.format('?,'*21 + '?')
+fm_sql = '''INSERT INTO fm VALUES({})'''.format('?,'*30 + '?')
+am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*21 + '?')
 tv_sql = '''INSERT OR IGNORE INTO tv VALUES({})'''.format('?,'*29 + '?')
 
 def insert_list(db_f, l, sql):
@@ -127,7 +127,7 @@ def fill_file(filename, out, which):
     sql = None
     if which == 'fm':
         sql = fm_sql
-    elif which == 'fm':
+    elif which == 'am':
         sql = am_sql
     elif which == 'tv':
         sql = tv_sql
