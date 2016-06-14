@@ -10,20 +10,20 @@ python setup.py
 ```
 ###Then run the tests
 ```
-time python tests.py onecommit
+$ time python tests.py onecommit
 
 real  0m0.102s
 user  0m0.076s
 sys 0m0.004s
 ```
 ```
-time python tests.py execmany
+$ time python tests.py execmany
 
 real  0m0.094s
 user  0m0.068s
 sys 0m0.004s
 ```
 ```
-time python tests.py multcommits
+$ time python tests.py multcommits
 # Takes too long
 ```
