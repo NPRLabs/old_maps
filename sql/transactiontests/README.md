@@ -6,7 +6,7 @@ a commit is a transaction so, even if you don't use executemany, you still get "
 
 ###First setup an emtpy db
 ```
-python setup.py
+$ python setup.py
 ```
 ###Then run the tests
 ```

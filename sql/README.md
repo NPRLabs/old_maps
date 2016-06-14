@@ -4,7 +4,7 @@
 
 ###First setup an emtpy db, filaname is fcc.db
 ```
-python create_table.py
+$ python create_table.py
 ```
 
 ###NEW TOOL HERE
