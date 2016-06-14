@@ -1,4 +1,4 @@
-##Python Tools for making and maintaining and fcc sqlite(3) databases
+#Python Tools for making and maintaining and fcc sqlite(3) databases
 
 ##Tools and Usage:
 
@@ -26,8 +26,8 @@ $ time python tests.py multcommits
 ```
 
 ###Filling a table with entries
-Can use -o <filename> to specify a non-'fcc.db' database and
--s <filename> to specify a non-'data/*_data.txt' downloaded terms
+Can use -o \<filename> to specify a non-'fcc.db' database and
+-s \<filename> to specify a non-'data/*_data.txt' downloaded terms
 ```
 $ python fill.py fm
 Attempting to insert up to 10000
