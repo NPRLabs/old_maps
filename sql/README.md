@@ -6,24 +6,8 @@
 ```
 python create_table.py
 ```
-###Then run the tests
-```
-$ time python tests.py onecommit
 
-real  0m0.102s
-sys 0m0.004s
-```
-```
-$ time python tests.py execmany
-
-real  0m0.094s
-user  0m0.068s
-sys 0m0.004s
-```
-```
-$ time python tests.py multcommits
-# Takes too long
-```
+###NEW TOOL HERE
 
 ###Filling a table with entries
 Can use -o \<filename> to specify a non-'fcc.db' database and
@@ -40,3 +24,7 @@ Attempting to insert up to 30000
 $ python count.py fm
 [(37491,)]
 ```
+
+##Schema Description:
+
+#TODO
