@@ -12,7 +12,7 @@ $ python create_table.py
 ####Filling a table with entries
 Can use -o \<filename> to specify a non-'fcc.db' database and
 -s \<filename> to specify a non-'data/*_data.txt' downloaded terms
-```
+```bash
 $ python fill.py fm
 Attempting to insert up to 10000
 Attempting to insert up to 20000
