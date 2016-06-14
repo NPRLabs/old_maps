@@ -35,7 +35,7 @@ one has different columns.
 
 #####FM
 | Name     | TYPE    | Description
-| -------- |:-------:| 
+| -------- | ------- | --------------------------------------------------------
 | id       | INTEGER | unique id, consequence of database design
 | callsign | TEXT    | **Mostly** unique sign, some lack a callsign
 | freq     | REAL    | Real valued frequency
