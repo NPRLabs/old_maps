@@ -169,6 +169,8 @@ def attempt_to_update(db_f, l):
             print 'test'
             c.execute(update_sql, entry)
         else:
+            #need to handle this
+            print ts
             print len(ts)
 
     db.commit()
