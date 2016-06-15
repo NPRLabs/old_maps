@@ -107,9 +107,12 @@ def line_read(line, typ):
     o = tuple(output)
     return o
 
-fm_sql = '''INSERT INTO fm VALUES({})'''.format('?,'*30 + '?')
-am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*21 + '?')
-tv_sql = '''INSERT OR IGNORE INTO tv VALUES({})'''.format('?,'*29 + '?')
+fm_num = 30
+am_num = 21
+tv_num = 29
+fm_sql = '''INSERT INTO fm VALUES({})'''.format('?,'*fm_num + '?')
+am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*am_num + '?')
+tv_sql = '''INSERT OR IGNORE INTO tv VALUES({})'''.format('?,'*tv_num + '?')
 
 def insert_list(db_f, l, sql):
     db = sqlite3.connect(db_f)
@@ -125,38 +128,41 @@ def fill_file(filename, out, which):
     f = open(filename, 'r')
 
     sql = None
+    num = 0
     if which == 'fm':
-        sql = fm_sql
+        sql= fm_sql
+        num = fm_num
     elif which == 'am':
         sql = am_sql
+        num = am_num
     elif which == 'tv':
         sql = tv_sql
+        num = tv_num
 
     list_to_insert = []
+    i = 0
     for i, line in enumerate(f):
         if line:
             list_to_insert.append(line_read(line, which))
             if i % 10000 == 0 and i > 0:
                 print 'Attempting to insert up to {}'.format(i)
-                attempt_to_update(out, list_to_insert)
+                attempt_to_update(out, list_to_insert, which, num)
                 list_to_insert = []
-            
-    # fill last ones
-
-    attempt_to_update(out, list_to_insert)
+    print 'Attempting to insert up to {}'.format(i)
+    attempt_to_update(out, list_to_insert, which, num)
     f.close()
 
 
-def attempt_to_update(db_f, l):
+def attempt_to_update(db_f, l, typ, num):
     db = sqlite3.connect(db_f)
     c = db.cursor()
-    select_sql = '''SELECT id FROM fm WHERE appid=?'''
-    select_all_sql = '''SELECT * FROM fm WHERE appid=?'''
-    update_sql = '''INSERT OR REPLACE INTO fm VALUES({})'''.format('?,'*30 + '?')
+    select_sql = '''SELECT id FROM {} WHERE appid=?'''.format(typ)
+    select_all_sql = '''SELECT * FROM {} WHERE appid=?'''.format(typ)
+    update_sql = '''INSERT OR REPLACE INTO {} VALUES({})'''.format(typ, '?,'*num + '?')
 
     order_dict = {}
     for i, entry in enumerate(l):
-        c.execute(select_sql, (entry[29],))
+        c.execute(select_sql, (entry[num-2],))
         ts = c.fetchall()
         if len(ts) == 1:
             t = ts[0]
@@ -172,21 +178,21 @@ def attempt_to_update(db_f, l):
             c.execute(update_sql, entry)
         else:
             length = len(ts)
-            order_dict[entry[29]] = order_dict.get(entry[29],-1) + 1
+            order_dict[entry[num-2]] = order_dict.get(entry[num-2],-1) + 1
             # just update them in order
-            c.execute(select_all_sql, (entry[29],))
-            this_entry = (c.fetchall())[order_dict[entry[29]]]
-            print this_entry
-            if this_entry[3] == 'FS':
-                entry = list(entry)
-                entry[0] = this_entry[0]
-                entry = tuple(entry)
-                if not entry[0]:
-                    print t
-                    print 'uh oh'
-                c.execute(update_sql, entry)
-            else:
-                print 'UH OH'
+            c.execute(select_all_sql, (entry[num-2],))
+            this_entry = (c.fetchall())[order_dict[entry[num-2]]]
+           # print this_entry
+            #if this_entry[3] == 'FS':
+            entry = list(entry)
+            entry[0] = this_entry[0]
+            entry = tuple(entry)
+            if not entry[0]:
+                print t
+                print 'uh oh'
+            c.execute(update_sql, entry)
+            #else:
+             #   print 'UH OH'
 
 
     db.commit()

@@ -8,3 +8,5 @@ test2.txt
 *.pyc
 sql/temp
 /excels
+*.csv
+*.csv#
