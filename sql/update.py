@@ -151,8 +151,10 @@ def attempt_to_update(db_f, l):
     db = sqlite3.connect(db_f)
     c = db.cursor()
     select_sql = '''SELECT id FROM fm WHERE appid=?'''
+    select_all_sql = '''SELECT * FROM fm WHERE appid=?'''
     update_sql = '''INSERT OR REPLACE INTO fm VALUES({})'''.format('?,'*30 + '?')
 
+    order_dict = {}
     for i, entry in enumerate(l):
         c.execute(select_sql, (entry[29],))
         ts = c.fetchall()
@@ -169,9 +171,23 @@ def attempt_to_update(db_f, l):
             print 'test'
             c.execute(update_sql, entry)
         else:
-            #need to handle this
-            print ts
-            print len(ts)
+            length = len(ts)
+            order_dict[entry[29]] = order_dict.get(entry[29],-1) + 1
+            # just update them in order
+            c.execute(select_all_sql, (entry[29],))
+            this_entry = (c.fetchall())[order_dict[entry[29]]]
+            print this_entry
+            if this_entry[3] == 'FS':
+                entry = list(entry)
+                entry[0] = this_entry[0]
+                entry = tuple(entry)
+                if not entry[0]:
+                    print t
+                    print 'uh oh'
+                c.execute(update_sql, entry)
+            else:
+                print 'UH OH'
+
 
     db.commit()
     db.close()
