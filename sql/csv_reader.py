@@ -16,8 +16,9 @@ if __name__ == '__main__':
             print line['calletter'] 
             stat = line['stationstatus']
             splitup = line['calletter'].split('-')
-            if splitup[1] == 'FM':
-                c.execute("UPDATE fm SET member=? WHERE callsign LIKE ?", (stat, splitup[0]+'%'))
+            if splitup[1] == sys.argv[1].upper():
+                c.execute('''UPDATE {} SET member=? WHERE callsign LIKE ?'''
+                        .format(sys.argv[1]), (stat, splitup[0]+'%'))
     db.commit()
     db.close()
 
