@@ -142,7 +142,8 @@ def fill_file(filename, out, which):
                 list_to_insert = []
             
     # fill last ones
-    insert_list(out, list_to_insert, sql)
+
+    attempt_to_update(out, list_to_insert)
     f.close()
 
 
