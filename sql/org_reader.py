@@ -25,9 +25,6 @@ def update_org(db, c, parent_callsign, table, id_to_update, status):
         c.execute("SELECT * FROM orgs WHERE parentcallsign LIKE ?"
         .format(table), (parent_callsign+'%',))
         org = c.fetchone()
-        print org
-        print parent_callsign
-        print 'AAA{}AAA'.format(table)
         c.execute("UPDATE {} SET org=?, member=? WHERE id=?"
             .format(table), (org[0], status, id_to_update,))
         #also have to set the parent's org
@@ -50,17 +47,16 @@ def set_orgs():
         list_reader = csv.DictReader(csvfile)
         for line in list_reader:
             splitup = line['associate calletter'].split('-')
-            c.execute("SELECT * FROM {} WHERE callsign LIKE ?"
-                .format(splitup[1].lower()), (splitup[0]+'%',))
+            c.execute("SELECT * FROM {} WHERE callsign=?"
+                .format(splitup[1].lower().strip()), (splitup[0],))
             output = c.fetchall()
             if len(output) == 1:
                 ''' EXACTLY ONE MATCH GOOD'''
-                print "1: one callsign match"
                 update_org(db, c, line['parent calletter'], splitup[1].lower().strip(), output[0][0]
                         , line['stationstatus'])
             elif len(output) > 1:
-                c.execute('SELECT * FROM {} WHERE callsign LIKE ? and service=? and status=?'''
-                    .format(splitup[1].lower().strip()), (splitup[0]+'%',splitup[1].strip(),'LIC'))
+                c.execute('SELECT * FROM {} WHERE callsign=? and service=? and status=?'''
+                    .format(splitup[1].lower().strip()), (splitup[0],splitup[1].strip(),'LIC'))
 
                 new_output = c.fetchall()
                 #gonna need to update both
@@ -97,14 +93,21 @@ def set_orgs():
                     print 'bad1'
                 else:
                     ''' EXACTLY ONE MATCH GOOD'''
-                    print "2: one callsign service and status match"
                     update_org(db, c, line['parent calletter'], 
                             splitup[1].lower().strip(), output[0][0], line['stationstatus'])
 
             else:
-                print "Not in database:{}".format(splitup[0])
-                print "What do we do here?"
-                print
+                c.execute("SELECT * FROM {} WHERE callsign LIKE ?"
+                    .format(splitup[1].lower().strip()), (splitup[0]+'%',))
+                output = c.fetchall()
+                if not len(output) == 0:
+                    ''' EXACTLY ONE MATCH GOOD'''
+                    update_org(db, c, line['parent calletter'], 
+                            splitup[1].lower().strip(), output[0][0], line['stationstatus'])
+                else:
+                    print "Not in database:{}".format(splitup[0])
+                    print "What do we do here?"
+                    print
 
     db.commit()
     db.close()
