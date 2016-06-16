@@ -31,7 +31,7 @@ $ python count.py fm
 [(37491,)]
 ```
 
-###Schema Description|
+###Schema Description
 
 The database consists of three tables, fm, am, and tv, corresponding to each of the 
 3 types of signals.

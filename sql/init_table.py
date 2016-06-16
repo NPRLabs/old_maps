@@ -23,9 +23,10 @@ if __name__ == '__main__':
     if args.restart:
         os.remove('fcc.db')
         create_table.create_table()
-        fill.fill_file(filename, outfile, 'fm')
-        fill.fill_file(filename, outfile, 'am')
-        fill.fill_file(filename, outfile, 'tv')
+        outfile = 'fcc.db'
+        fill.fill_file('data/fm_data.txt', outfile, 'fm')
+        fill.fill_file('data/am_data.txt', outfile, 'am')
+        fill.fill_file('data/tv_data.txt', outfile, 'tv')
 
     csv_reader.cread()
     org_reader.set_orgs()

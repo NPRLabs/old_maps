@@ -9,14 +9,14 @@ import math
 
 #c.execute(UPDATE {} SET member=? WHERE callsign LIKE ?
 
-def update_org(db, c, parent_callsign, table, id_to_update):
+def update_org(db, c, parent_callsign, table, id_to_update, status):
     c.execute("SELECT * FROM orgs WHERE parentcallsign LIKE ?", (parent_callsign+'%',))
     orgs = c.fetchall()
     if len(orgs) == 1:
-        c.execute("UPDATE {} SET org=? WHERE id=?"
-            .format(table), (orgs[0][0], id_to_update,))
-        c.execute("UPDATE {} SET org=? WHERE callsign LIKE ?"
-            .format(table), (orgs[0][0], parent_callsign.split('-')[0]+'%'))
+        c.execute("UPDATE {} SET org=?, member=? WHERE id=?"
+            .format(table), (orgs[0][0], status, id_to_update,))
+        c.execute("UPDATE {} SET org=? WHERE callsign=? or callsign=?"
+            .format(table), (orgs[0][0], parent_callsign.split('-')[0], parent_callsign))
     elif len(orgs) == 0:
         #make new org entry
         c.execute("INSERT INTO orgs VALUES(?,?,?)", (None, parent_callsign, None))
@@ -28,11 +28,11 @@ def update_org(db, c, parent_callsign, table, id_to_update):
         print org
         print parent_callsign
         print 'AAA{}AAA'.format(table)
-        c.execute("UPDATE {} SET org=? WHERE id=?"
-            .format(table), (org[0], id_to_update,))
+        c.execute("UPDATE {} SET org=?, member=? WHERE id=?"
+            .format(table), (org[0], status, id_to_update,))
         #also have to set the parent's org
-        c.execute("UPDATE {} SET org=? WHERE callsign LIKE ?"
-            .format(table), (org[0], parent_callsign.split('-')[0]+'%'))
+        c.execute("UPDATE {} SET org=? WHERE callsign=? or callsign=?"
+            .format(table), (org[0], parent_callsign.split('-')[0], parent_callsign))
         
     else:
         #shouldn't happen
@@ -56,7 +56,8 @@ def set_orgs():
             if len(output) == 1:
                 ''' EXACTLY ONE MATCH GOOD'''
                 print "1: one callsign match"
-                update_org(db, c, line['parent calletter'], splitup[1].lower().strip(), output[0][0])
+                update_org(db, c, line['parent calletter'], splitup[1].lower().strip(), output[0][0]
+                        , line['stationstatus'])
             elif len(output) > 1:
                 c.execute('SELECT * FROM {} WHERE callsign LIKE ? and service=? and status=?'''
                     .format(splitup[1].lower().strip()), (splitup[0]+'%',splitup[1].strip(),'LIC'))
@@ -84,7 +85,7 @@ def set_orgs():
                         '''
                     '''UPATING FIRST OF THEM'''
                     update_org(db, c, line['parent calletter'], 
-                            splitup[1].lower().strip(), new_output[0][0])
+                            splitup[1].lower().strip(), new_output[0][0], line['stationstatus'])
 
 
                 elif len(new_output) == 0:
@@ -98,7 +99,7 @@ def set_orgs():
                     ''' EXACTLY ONE MATCH GOOD'''
                     print "2: one callsign service and status match"
                     update_org(db, c, line['parent calletter'], 
-                            splitup[1].lower().strip(), output[0][0])
+                            splitup[1].lower().strip(), output[0][0], line['stationstatus'])
 
             else:
                 print "Not in database:{}".format(splitup[0])
