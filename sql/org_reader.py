@@ -9,14 +9,16 @@ import math
 
 #c.execute(UPDATE {} SET member=? WHERE callsign LIKE ?
 
-def update_org(db, c, parent_callsign, table, id_to_update, status):
+def update_org(db, c, parent_callsign, ptable, ctable, id_to_update, status):
     c.execute("SELECT * FROM orgs WHERE parentcallsign LIKE ?", (parent_callsign+'%',))
     orgs = c.fetchall()
+    if id_to_update == 1695:
+        print 'YES'
     if len(orgs) == 1:
         c.execute("UPDATE {} SET org=?, member=? WHERE id=?"
-            .format(table), (orgs[0][0], status, id_to_update,))
+            .format(ctable), (orgs[0][0], status, id_to_update,))
         c.execute("UPDATE {} SET org=? WHERE callsign=? or callsign=?"
-            .format(table), (orgs[0][0], parent_callsign.split('-')[0], parent_callsign))
+            .format(ptable), (orgs[0][0], parent_callsign.split('-')[0], parent_callsign))
     elif len(orgs) == 0:
         #make new org entry
         c.execute("INSERT INTO orgs VALUES(?,?,?)", (None, parent_callsign, None))
@@ -26,10 +28,10 @@ def update_org(db, c, parent_callsign, table, id_to_update, status):
         .format(table), (parent_callsign+'%',))
         org = c.fetchone()
         c.execute("UPDATE {} SET org=?, member=? WHERE id=?"
-            .format(table), (org[0], status, id_to_update,))
+            .format(ctable), (org[0], status, id_to_update,))
         #also have to set the parent's org
         c.execute("UPDATE {} SET org=? WHERE callsign=? or callsign=?"
-            .format(table), (org[0], parent_callsign.split('-')[0], parent_callsign))
+            .format(ptable), (org[0], parent_callsign.split('-')[0], parent_callsign))
         
     else:
         #shouldn't happen
@@ -47,16 +49,20 @@ def set_orgs():
         list_reader = csv.DictReader(csvfile)
         for line in list_reader:
             splitup = line['associate calletter'].split('-')
+            ctable = splitup[1].lower().strip()
+            if splitup[0] == 'WBAA':
+                print splitup
+            ptable = line['parent calletter'].split('-')[1].lower().strip()
             c.execute("SELECT * FROM {} WHERE callsign=?"
-                .format(splitup[1].lower().strip()), (splitup[0],))
+                .format(ctable), (splitup[0],))
             output = c.fetchall()
             if len(output) == 1:
                 ''' EXACTLY ONE MATCH GOOD'''
-                update_org(db, c, line['parent calletter'], splitup[1].lower().strip(), output[0][0]
+                update_org(db, c, line['parent calletter'], ptable, ctable, output[0][0]
                         , line['stationstatus'])
             elif len(output) > 1:
                 c.execute('SELECT * FROM {} WHERE callsign=? and service=? and status=?'''
-                    .format(splitup[1].lower().strip()), (splitup[0],splitup[1].strip(),'LIC'))
+                    .format(ctable), (splitup[0], ctable.upper(), 'LIC'))
 
                 new_output = c.fetchall()
                 #gonna need to update both
@@ -80,13 +86,14 @@ def set_orgs():
                         print 'uh oh'
                         '''
                     '''UPATING FIRST OF THEM'''
-                    update_org(db, c, line['parent calletter'], 
-                            splitup[1].lower().strip(), new_output[0][0], line['stationstatus'])
+                    for n in xrange(0, len(new_output)):
+                        update_org(db, c, line['parent calletter'], 
+                                ptable, ctable, new_output[n][0], line['stationstatus'])
 
 
                 elif len(new_output) == 0:
                     c.execute('SELECT * FROM {} WHERE callsign=? and service=?'''
-                        .format(splitup[1].lower().strip()), (splitup[0],splitup[1].strip()))
+                        .format(ctable), (splitup[0], ctable.upper()))
                     print c.fetchall()
                     print splitup
                     print output
@@ -94,25 +101,25 @@ def set_orgs():
                 else:
                     ''' EXACTLY ONE MATCH GOOD'''
                     update_org(db, c, line['parent calletter'], 
-                            splitup[1].lower().strip(), output[0][0], line['stationstatus'])
+                            ptable, ctable, output[0][0], line['stationstatus'])
 
             else:
                 c.execute("SELECT * FROM {} WHERE callsign LIKE ?"
-                    .format(splitup[1].lower().strip()), (splitup[0]+'%',))
+                    .format(ctable), (splitup[0]+'%',))
                 output = c.fetchall()
                 if len(output) == 1:
                     ''' EXACTLY ONE MATCH GOOD'''
                     update_org(db, c, line['parent calletter'], 
-                            splitup[1].lower().strip(), output[0][0], line['stationstatus'])
+                            ptable, ctable, output[0][0], line['stationstatus'])
                 elif len(output) > 1:
                     c.execute('SELECT * FROM {} WHERE callsign=? and service=? and status=?'''
-                        .format(splitup[1].lower().strip()), (splitup[0],splitup[1].strip(),'LIC'))
+                        .format(ctable), (splitup[0], ctable.upper(), 'LIC'))
                     new_output = c.fetchall()
                     #gonna need to update both
                     if len(new_output) > 1:
                         '''UPATING FIRST OF THEM'''
                         update_org(db, c, line['parent calletter'], 
-                                splitup[1].lower().strip(), new_output[0][0], line['stationstatus'])
+                                ptable, ctable, new_output[0][0], line['stationstatus'])
 
 
                 else:
@@ -123,10 +130,10 @@ def set_orgs():
     # Explicitly check "member-less" parents
     
     print "FM:"
-    c.execute("SELECT * FROM fm WHERE member ISNULL and org NOT NULL")
+    c.execute("SELECT * FROM fm WHERE member ISNULL and org NOT NULL and status='LIC'")
     print c.fetchall()
     print "AM:"
-    c.execute("SELECT * FROM fm WHERE member ISNULL and org NOT NULL")
+    c.execute("SELECT * FROM am WHERE member ISNULL and org NOT NULL and status='LIC'")
     print c.fetchall()
 
     db.commit()
