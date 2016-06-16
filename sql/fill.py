@@ -82,6 +82,7 @@ def line_read(line, typ):
                 continue
             else:
                 output.append(entry)
+        output.append(None)
     if typ == 'tv':
         for i, entry in enumerate(l):
             if i in [1, 7, 14, 16] or entry == '\n':
@@ -104,12 +105,14 @@ def line_read(line, typ):
                 output.append(entry)
         output.append(None)
     #deal with org
+    output.append(None)
+    print output
     o = tuple(output)
     return o
 
-fm_sql = '''INSERT INTO fm VALUES({})'''.format('?,'*30 + '?')
-am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*21 + '?')
-tv_sql = '''INSERT OR IGNORE INTO tv VALUES({})'''.format('?,'*29 + '?')
+fm_sql = '''INSERT INTO fm VALUES({})'''.format('?,'*31 + '?')
+am_sql = '''INSERT INTO am VALUES({})'''.format('?,'*23 + '?')
+tv_sql = '''INSERT OR IGNORE INTO tv VALUES({})'''.format('?,'*30 + '?')
 
 def insert_list(db_f, l, sql):
     db = sqlite3.connect(db_f)
