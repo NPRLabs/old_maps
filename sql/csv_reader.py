@@ -7,7 +7,7 @@ import time
 import sys
 import math
 
-if __name__ == '__main__':
+def cread():
     db = sqlite3.connect('fcc.db')
     c = db.cursor()
     with open('data/full_list.csv') as csvfile:
@@ -16,12 +16,13 @@ if __name__ == '__main__':
             print line['calletter'] 
             stat = line['stationstatus']
             splitup = line['calletter'].split('-')
-            if splitup[1] == sys.argv[1].upper():
-                c.execute('''UPDATE {} SET member=? WHERE callsign LIKE ?'''
-                        .format(sys.argv[1]), (stat, splitup[0]+'%'))
+            c.execute('''UPDATE {} SET member=? WHERE callsign LIKE ?'''
+                    .format(splitup[1].lower()), (stat, splitup[0]+'%'))
     db.commit()
     db.close()
 
+if __name__ == '__main__':
+    cread()
 
 
 

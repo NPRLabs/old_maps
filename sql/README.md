@@ -2,6 +2,12 @@
 
 ###Tools and Usage|
 
+####Full initialization:
+-r restarts the db (reloads and fills it)
+```
+$ python init_table.py
+```
+
 ####First setup an emtpy db, filaname is fcc.db
 ```
 $ python create_table.py
@@ -34,11 +40,11 @@ Because there is a difference between data available for each type of signal, ea
 one has different columns.
 
 ######Links to the full desciption of each table:
-[fm](fm_schema.md)
+[fm](schemas/fm_schema.md)
 
-[am](am_schema.md)
+[am](schemas/am_schema.md)
 
-[tv](tv_schema.md)
+[tv](schemas/tv_schema.md)
 
 
 

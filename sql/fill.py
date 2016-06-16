@@ -7,7 +7,7 @@ import time
 import sys
 import math
 
-def setup_args():
+def setup_args_fill():
     parser = argparse.ArgumentParser(description='small tool')
 
 
@@ -149,7 +149,7 @@ def fill_file(filename, out, which):
     f.close()
 
 if __name__ == '__main__':
-    parser = setup_args()
+    parser = setup_args_fill()
     args = parser.parse_args()
     outfile = None
     if args.outfile:
