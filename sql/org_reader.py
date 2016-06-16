@@ -120,6 +120,15 @@ def set_orgs():
                     print "What do we do here?"
                     print
 
+    # Explicitly check "member-less" parents
+    
+    print "FM:"
+    c.execute("SELECT * FROM fm WHERE member ISNULL and org NOT NULL")
+    print c.fetchall()
+    print "AM:"
+    c.execute("SELECT * FROM fm WHERE member ISNULL and org NOT NULL")
+    print c.fetchall()
+
     db.commit()
     db.close()
 

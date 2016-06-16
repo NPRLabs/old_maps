@@ -13,9 +13,10 @@ def cread():
     with open('data/full_list.csv') as csvfile:
         list_reader = csv.DictReader(csvfile)
         for line in list_reader:
-            print line['calletter'] 
             stat = line['stationstatus']
             splitup = line['calletter'].split('-')
+            if splitup[0] == 'WILL':
+                print splitup
             c.execute('''UPDATE {} SET member=? WHERE callsign LIKE ?'''
                     .format(splitup[1].lower()), (stat, splitup[0]+'%'))
     db.commit()
