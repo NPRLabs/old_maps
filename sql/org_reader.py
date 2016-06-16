@@ -100,10 +100,21 @@ def set_orgs():
                 c.execute("SELECT * FROM {} WHERE callsign LIKE ?"
                     .format(splitup[1].lower().strip()), (splitup[0]+'%',))
                 output = c.fetchall()
-                if not len(output) == 0:
+                if len(output) == 1:
                     ''' EXACTLY ONE MATCH GOOD'''
                     update_org(db, c, line['parent calletter'], 
                             splitup[1].lower().strip(), output[0][0], line['stationstatus'])
+                elif len(output) > 1:
+                    c.execute('SELECT * FROM {} WHERE callsign=? and service=? and status=?'''
+                        .format(splitup[1].lower().strip()), (splitup[0],splitup[1].strip(),'LIC'))
+                    new_output = c.fetchall()
+                    #gonna need to update both
+                    if len(new_output) > 1:
+                        '''UPATING FIRST OF THEM'''
+                        update_org(db, c, line['parent calletter'], 
+                                splitup[1].lower().strip(), new_output[0][0], line['stationstatus'])
+
+
                 else:
                     print "Not in database:{}".format(splitup[0])
                     print "What do we do here?"
