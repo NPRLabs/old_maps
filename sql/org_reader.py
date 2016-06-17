@@ -9,29 +9,37 @@ import math
 
 #c.execute(UPDATE {} SET member=? WHERE callsign LIKE ?
 
+find_parent_sql = "SELECT * FROM orgs WHERE parentcallsign LIKE ?"
+org_insert_sql = "INSERT INTO orgs VALUES(?,?,?)"
+
+def update_org_id(table):
+    return "UPDATE {} SET org=?, member=? WHERE id=?".format(table)
+
+def update_org_callsign(table):
+    return "UPDATE {} SET org=? WHERE callsign=? or callsign=?".format(table)
+
+
 def update_org(db, c, parent_callsign, ptable, ctable, id_to_update, status):
-    c.execute("SELECT * FROM orgs WHERE parentcallsign LIKE ?", (parent_callsign+'%',))
+    c.execute(find_parent_sql, (parent_callsign+'%',))
     orgs = c.fetchall()
     if id_to_update == 1695:
         print 'YES'
     if len(orgs) == 1:
-        c.execute("UPDATE {} SET org=?, member=? WHERE id=?"
-            .format(ctable), (orgs[0][0], status, id_to_update,))
-        c.execute("UPDATE {} SET org=? WHERE callsign=? or callsign=?"
-            .format(ptable), (orgs[0][0], parent_callsign.split('-')[0], parent_callsign))
+        c.execute(update_org_id(ctable), (orgs[0][0], status, id_to_update,))
+        c.execute(update_org_callsign(ptable), 
+                    (orgs[0][0], parent_callsign.split('-')[0], parent_callsign))
     elif len(orgs) == 0:
         #make new org entry
-        c.execute("INSERT INTO orgs VALUES(?,?,?)", (None, parent_callsign, None))
+        c.execute(org_insert_sql, (None, parent_callsign, None))
 
         #get id
-        c.execute("SELECT * FROM orgs WHERE parentcallsign LIKE ?"
-        .format(table), (parent_callsign+'%',))
+        c.execute(find_parent_sql, (parent_callsign+'%',))
         org = c.fetchone()
-        c.execute("UPDATE {} SET org=?, member=? WHERE id=?"
-            .format(ctable), (org[0], status, id_to_update,))
+
+        c.execute(update_org_id(ctable), (org[0], status, id_to_update,))
         #also have to set the parent's org
-        c.execute("UPDATE {} SET org=? WHERE callsign=? or callsign=?"
-            .format(ptable), (org[0], parent_callsign.split('-')[0], parent_callsign))
+        c.execute(update_org_callsign(ptable),
+                    (org[0], parent_callsign.split('-')[0], parent_callsign))
         
     else:
         #shouldn't happen

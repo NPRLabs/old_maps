@@ -1,5 +1,4 @@
 import argparse
-
 import sqlite3
 import sys
 import random
@@ -9,23 +8,10 @@ import math
 
 def setup_args_fill():
     parser = argparse.ArgumentParser(description='small tool')
-
-
     parser.add_argument('which', choices=['tv', 'am', 'fm'])
     parser.add_argument('-o', '--output-file', default='', dest='outfile')
     parser.add_argument('-s', '--load_file', default='', dest='filename')
-    '''
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-r', '--reload_from_source', action='store_true')
-    group.add_argument('-s', '--load_file', default='', dest='filename')
 
-    group2 = parser.add_mutually_exclusive_group()
-    group2.add_argument('-q', '--query', nargs=2, default='', dest='query')
-    group2.add_argument('-l', '--listquery', nargs=2, default='', dest='listquery')
-    group2.add_argument('-f', '--filter', 
-            help='1:field filter by 2: value it must be, 3:new filename', 
-                nargs=3, default='', dest='filt')
-    '''
     return parser
 
 def format_line(line):
