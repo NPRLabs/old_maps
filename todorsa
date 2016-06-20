@@ -9,4 +9,12 @@ Still need to figure out the trigger, to trigger recording of the data, tho this
 Also still need to confirm the non-importance (or possible importance) of the 
 
 
+This device measures in dbm
+but we need values in dbuv for field strength calculations:
+
+
+I have determined that (most likely) the conversion is as follows:
+
+value in dBuV = value in dBm + 90 + 10*log_10_(Impendance (50 ohms)) or equivalently:
+value in dBuV = value in dBm + 90 + 10*ln(Impendance (50 ohms))/ln(10)
 
