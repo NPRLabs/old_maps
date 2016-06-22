@@ -10,3 +10,4 @@ sql/temp
 /excels
 *.csv
 *.csv#
+shape/Transmitters.*
