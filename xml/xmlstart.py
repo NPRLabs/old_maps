@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import datetime as dt
 import time
 
 tree = ET.parse('June23/data1/CAPT00.XML')
@@ -30,9 +31,12 @@ if __name__ == '__main__':
         t = time.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
         lats = pt.attrib
         un = time.mktime(t)
+        td1 = dt.timedelta(hours=-3) 
+        un += td1.total_seconds()
         if un in locs:
             print "ERROR"
         locs[un] = lats['lat'] + ',' + lats['lon']
+
     print "NEW TEST"
     base_folder = 'June23'
     num_of_files = {'data1':82, 'data2':238}
@@ -44,9 +48,20 @@ if __name__ == '__main__':
             time_str = root.attrib['date'] + ' ' + root.attrib['time']
             t = time.strptime(time_str, "%Y-%m-%d %H:%M:%S")
             #print time_str
-            #print time.mktime(t)
-            if time.mktime(t) in locs:
-                print "good"
+            t1 = time.mktime(t)
+        
+            if t1 in locs:
+                print "good1"
+                print data
+                print i
             #print find_val(root, 88.5)
 
+
+
+
+
 #print locs
+
+
+
+
