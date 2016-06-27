@@ -37,11 +37,37 @@ if __name__ == '__main__':
             print "ERROR"
         locs[un] = lats['lat'] + ',' + lats['lon']
 
-    print "NEW TEST"
     base_folder = 'June23'
-    num_of_files = {'data1':82, 'data2':238}
+    for i in xrange(1, 5):
+        tree = ET.parse('{}/activity_{}.tcx'.format(base_folder, str(i)))
+        root = tree.getroot()
+        print root.tag + ':'
+        
+        for act in root.iter('Trackpoint'):
+            temp_str = act[0].text
+            
+            time_str = temp_str.split('.')[0]
+            t = time.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
+
+            lats = act[1]
+            if lats.tag == 'Position':
+
+                lat = lats[0].text
+                lon = lats[1].text
+                un = time.mktime(t)
+                td1 = dt.timedelta(hours=-3) 
+                un += td1.total_seconds()
+                if un in locs:
+                    continue
+                locs[un] = lat + ',' + lon
+    
+
+    print "NEW TEST:"
+    base_folder = 'June23'
+    num_of_files = {'data1':83, 'data2':239}
     for data in ['data1', 'data2']:
-        for i in xrange(0, num_of_files[data] + 1):
+        num = 0
+        for i in xrange(0, num_of_files[data]):
             tree = ET.parse('{}/{}/CAPT{}.XML'.format(base_folder, data, str(i).zfill(2)))
             root = tree.getroot()
             
@@ -51,11 +77,9 @@ if __name__ == '__main__':
             t1 = time.mktime(t)
         
             if t1 in locs:
-                print "good1"
-                print data
-                print i
+                num += 1
             #print find_val(root, 88.5)
-
+        print "{}: Found times:{} out of total:{}".format(data, num, num_of_files[data])
 
 
 
