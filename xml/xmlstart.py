@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import datetime as dt
 import time
+import csv
 
 tree = ET.parse('June23/data1/CAPT00.XML')
 root = tree.getroot()
@@ -63,6 +64,13 @@ if __name__ == '__main__':
     
 
     print "NEW TEST:"
+
+    print locs
+
+    csvfile = open('test.csv', 'w')
+    names = ['latitude', 'longitude', 'val'] 
+    writer = csv.DictWriter(csvfile, fieldnames=names)
+    writer.writeheader()
     base_folder = 'June23'
     num_of_files = {'data1':83, 'data2':239}
     for data in ['data1', 'data2']:
@@ -76,10 +84,17 @@ if __name__ == '__main__':
             #print time_str
             t1 = time.mktime(t)
         
+            # basically, ignore the ones without locations
             if t1 in locs:
                 num += 1
-            #print find_val(root, 88.5)
+                power = find_val(root, 88.5)
+                loc = locs[t1].split(',')
+                lat = loc[0]
+                lon = loc[1]
+                writer.writerow({'val':power, 'latitude':lat, 'longitude':lon})
+
         print "{}: Found times:{} out of total:{}".format(data, num, num_of_files[data])
+
 
 
 

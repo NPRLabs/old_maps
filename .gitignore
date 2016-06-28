@@ -16,3 +16,5 @@ sql/temp
 *.csv#
 shape/Transmitters.*
 shape/newtest.*
+*.json
+test.js
