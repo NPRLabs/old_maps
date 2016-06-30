@@ -30,6 +30,7 @@ if __name__ == '__main__':
         
         time_str = temp_str.split('.')[0]
         t = time.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
+        print time_str
         lats = pt.attrib
         un = time.mktime(t)
         td1 = dt.timedelta(hours=-3) 
@@ -48,6 +49,7 @@ if __name__ == '__main__':
             temp_str = act[0].text
             
             time_str = temp_str.split('.')[0]
+            print time_str
             t = time.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
 
             lats = act[1]
@@ -65,7 +67,6 @@ if __name__ == '__main__':
 
     print "NEW TEST:"
 
-    print locs
 
     csvfile = open('test.csv', 'w')
     names = ['latitude', 'longitude', 'val'] 
@@ -86,12 +87,16 @@ if __name__ == '__main__':
         
             # basically, ignore the ones without locations
             if t1 in locs:
+                print "Good" + time_str
                 num += 1
                 power = find_val(root, 88.5)
                 loc = locs[t1].split(',')
                 lat = loc[0]
                 lon = loc[1]
                 writer.writerow({'val':power, 'latitude':lat, 'longitude':lon})
+            else:
+                print "Bad" + time_str
+
 
         print "{}: Found times:{} out of total:{}".format(data, num, num_of_files[data])
 

@@ -4,49 +4,15 @@
 	<title>Leaflet Quick Start Guide Example</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
 </head>
+
 <body>
 	<div id="mapid" style="width: 1000px; height: 1000px"></div>
 
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 	<script src="test.js"></script>
 	<script>
-
-
-    function scale_color(feature) {
-        var power = feature.properties.power;
-        
-        var red = Math.floor((power/(62.0-10.0))*255)
-        var hex = c.toString(16)
-        var good = hex.length == 1 ? "0" + hex : hex;
-        
-        var val = "#" + good + "0000";
-        console.log(val);
-        return {color:val}
-        /*
-        if (power <= 10.0){
-            return {color:"#fff7ec"};}
-        if (power > 10.0 && power <= 15.0){
-            return {color:"#fee8c8"};}
-        if (power > 15.0 && power <= 20.0){
-            return {color:"#fdd49e"};}
-        if (power > 20.0 && power <= 27.0){
-            return {color:"#fdbb84"};
-            }
-        if (power > 27.0 && power <= 35.0){
-            return {color:"#fc8d59"};
-            }
-        if (power > 35.0 && power <= 45.0){
-            return {color:"#ef6548"};
-            }
-        if (power > 45.0 && power <= 51.0){
-            return {color:"#d7301f"};
-            }
-        if (power > 51.0){
-            return {color:"#990000"};
-            } */
-    }
 		var mymap = L.map('mapid').setView([37.8272, -122.2913], 13);
 
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
