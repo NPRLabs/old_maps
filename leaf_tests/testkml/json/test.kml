@@ -19,7 +19,7 @@
      <description>
 93.9 MHz --  FCC File No. </description>
      <Point>  
-         <coordinates>-73.985690,40.748440</coordinates>
+         <coordinates>-73.985690,40.748440,0</coordinates>
      </Point> 
   </Placemark>
 
@@ -28,7 +28,7 @@
            <color>77FFDD11</color>
            <!-- RGB color 11DDFF becomes 77FFDD11                          -->
            <!-- where the two leftmost digits represent opacity (alpha) values, and  -->
-           <!-- where the last six hexadecimal characters represent color as B G R   -->
+          <!-- where the last six hexadecimal characters represent color as B G R   -->
            <width>5</width> <!-- in pixels -->
         </LineStyle>
     </Style>

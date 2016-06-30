@@ -12,9 +12,17 @@ test2.txt
 *.pyc
 sql/temp
 /excels
+/shape_files_and_excels
+/drive_parsing/June23_data
 *.csv
 *.csv#
 shape/Transmitters.*
 shape/newtest.*
+Transmitters.*
+newtest.*
+*.shx
+*.shp
+*.dbf
 *.json
 test.js
+ownparse.js
