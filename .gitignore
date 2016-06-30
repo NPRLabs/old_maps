@@ -11,9 +11,10 @@ test2.txt
 *.db
 *.pyc
 sql/temp
-/excels
-/shape_files_and_excels
-/drive_parsing/June23_data
+excels
+shape_files_and_excels/*
+!shape_files_and_excels/placeholder.txt
+drive_parsing/June23_data
 *.csv
 *.csv#
 shape/Transmitters.*
