@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import time
 import csv
 import json
+import sys
 
 
 
@@ -43,7 +44,7 @@ def parse_kml_to_dict(string, infile):
 
     return {"type":"FeatureCollection", "features":lis}
 
-def write_to_file(d, js_name, outfile, indent=None):
+def write_to_file(d, js_name, outfile, indent=2):
 
     with open(outfile, 'w') as jfile:
         jfile.write('var {} = \n'.format(js_name))
@@ -52,7 +53,7 @@ def write_to_file(d, js_name, outfile, indent=None):
         json.dump(d, jfile, indent=indent)
 
 if __name__ == '__main__':
-    write_to_file(parse_kml_to_dict(None, 'json/test.kml'), 'main_test', 'main_test_file.js')
+    write_to_file(parse_kml_to_dict(None, sys.argv[1]), 'main_test', 'main_test_file.js')
 
 
 
