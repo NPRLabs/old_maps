@@ -28,7 +28,7 @@ if __name__ == '__main__':
         t = time.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
         lats = pt.attrib
         un = time.mktime(t)
-        td1 = dt.timedelta(hours=0, seconds=-(t.tm_sec % 3)) 
+        td1 = dt.timedelta(hours=0, seconds=-(t.tm_sec % 2)) 
         un += td1.total_seconds()
         print time.ctime(un)
         print un
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         t = time.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
         lats = pt.attrib
         un = time.mktime(t)
-        td1 = dt.timedelta(hours=0, seconds=-(t.tm_sec % 3)) 
+        td1 = dt.timedelta(hours=0, seconds=-(t.tm_sec % 2)) 
         
         un += td1.total_seconds()
         print time.ctime(un)
@@ -74,7 +74,7 @@ if __name__ == '__main__':
         t = time.strptime(time_str, "%Y-%m-%d %H:%M:%S")
         #print time_str
         t1 = time.mktime(t)
-        td1 = dt.timedelta(hours=13, seconds=-(t.tm_sec % 3))
+        td1 = dt.timedelta(hours=13, seconds=-(t.tm_sec % 2))
         
         t1 += td1.total_seconds()
         print time.ctime(t1)
