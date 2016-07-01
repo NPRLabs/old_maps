@@ -15,6 +15,7 @@ excels
 shape_files_and_excels/*
 !shape_files_and_excels/placeholder.txt
 drive_parsing/June23_data
+drive_parsing/June29_data
 *.csv
 *.csv#
 shape/Transmitters.*
