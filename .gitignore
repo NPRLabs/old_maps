@@ -28,3 +28,4 @@ newtest.*
 *.json
 test.js
 ownparse.js
+*main_test_file.js

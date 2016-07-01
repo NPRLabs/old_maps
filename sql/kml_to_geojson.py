@@ -15,7 +15,7 @@ def parse_kml_to_dict(string, infile):
         tree = ET.parse(infile)
         root = tree.getroot()
     elif not infile:
-        root = tree.fromstring(string)
+        root = ET.fromstring(string)
 
     lis = []
     center = root[0][3]
@@ -52,11 +52,12 @@ def write_to_file(d, js_name, outfile, indent=None):
     with open(outfile, 'a') as jfile:
         json.dump(d, jfile, indent=indent)
         
-def write_to_string(d, js_name, outfile, indent=None):
+def write_to_string(d, js_name, indent=None):
 
     s = 'var {} = \n'.format(js_name)
 
-    s += json.dumps(d, jfile, indent=indent)
+    s += json.dumps(d, indent=indent)
+    return s
 
 if __name__ == '__main__':
     write_to_file(parse_kml_to_dict(None, sys.argv[1]), 'main_test', 'main_test_file.js', indent=2)
