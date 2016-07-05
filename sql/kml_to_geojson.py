@@ -54,12 +54,14 @@ def write_to_file(d, js_name, outfile, indent=None):
         
 def write_to_string(d, js_name, indent=None):
 
-    s = 'var {} = \n'.format(js_name)
+    # if you want to be able to open it
+    s = ''
+    if js_name:
+        s = 'var {} = \n'.format(js_name)
 
     s += json.dumps(d, indent=indent)
     return s
 
 if __name__ == '__main__':
     write_to_file(parse_kml_to_dict(None, sys.argv[1]), 'main_test', 'main_test_file.js', indent=2)
-
 

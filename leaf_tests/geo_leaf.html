@@ -18,8 +18,19 @@
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(mymap);
+		
+		var geojsonMarkerOptions = {
+            radius: 1,
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        };
 
-        L.geoJson(new_test).addTo(mymap);
+        L.geoJson(test_json, {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, geojsonMarkerOptions);
+             }}).addTo(mymap);
 		
 
 	</script>

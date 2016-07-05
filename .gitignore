@@ -26,6 +26,7 @@ newtest.*
 *.shp
 *.dbf
 *.json
+leaf_tests/json
 test.js
 ownparse.js
 *main_test_file.js

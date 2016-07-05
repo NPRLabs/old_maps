@@ -46,11 +46,11 @@ if __name__ == '__main__':
     for i, c in enumerate(to_search):
         print str(i) + ': ' + str(c[1])
         kml = load_from_website(c[1],c[2],c[3],c[4].replace(' ','_').upper(),c[5])
-        s = write_to_string(parse_kml_to_dict(kml, None), 'down_test')
+        s = write_to_string(parse_kml_to_dict(kml, None), None)
         cur.execute('''UPDATE fm SET con=? WHERE id=?''', (s, c[0]))
-        db.commit()
 
     
+db.commit()
 db.close()
   
 
