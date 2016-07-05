@@ -20,20 +20,30 @@
 		}).addTo(mymap);
 		
 		var geojsonMarkerOptions = {
-            radius: 8,
-            color: "#000",
+            radius: 300,
+            fillColor: "#f33",
+            color: "#f33",
             weight: 1,
             opacity: 1,
             fillOpacity: 0.8
         };
-        var popup = L.popup();
+        var popup = L.popup()
         L.geoJson(test_json, {
             pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, geojsonMarkerOptions)
-                    .on('click', function(e) { 
-                                    popup.setLatLng(latlng)
-                                    .setContent(feature.properties.memberstatus)
-                                    .openOn(mymap); })      
+                return L.circle(latlng, 300, geojsonMarkerOptions)
+                        .on('click', function(e){
+                            popup
+                                    .setLatLng(latlng)
+                            .setContent(JSON.stringify(feature.properties))
+                            .openOn(mymap);
+                            })
+                        .on('mouseover', function(e){
+                                e.target.setRadius(1000);
+                            })
+                        .on('mouseout', function(e){
+                                e.target.setRadius(300);
+                                mymap.closePopup()
+                            })
              }}).addTo(mymap);
 		
 
