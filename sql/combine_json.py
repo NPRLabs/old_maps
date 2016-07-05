@@ -12,22 +12,22 @@ import json
 #def check_loc(f, d):
     #return f[
 def load_json(d):
-    return json.loads(d[0])['features']
+    return (json.loads(d[0]),d[1])
 
 if __name__ == '__main__':
     db = sqlite3.connect('fcc.db')
     cur = db.cursor()
 
-    cur.execute('''SELECT con FROM fm WHERE con NOT NULL''')
+    cur.execute('''SELECT con,member FROM fm WHERE con NOT NULL''')
 
     # most likely need to optimize
     features_list = [
         {
             "geometry":{"type":"GeometryCollection",
-                        "geometries": [ con[0]['geometry'],
-                                        con[1]['geometry'] ]},
+                        "geometries": [ con[0]['features'][0]['geometry'],
+                                        con[0]['features'][1]['geometry'] ]},
                         "type":"Feature",
-                        "properties":con[0]["properties"],
+                        "properties":dict(con[0]['features'][0]["properties"], **{"memberstatus":con[1]}),
                         "id":i+1}
                         for i,con in enumerate( map(load_json, cur) )] 
     #print len(features_list)
