@@ -17,6 +17,7 @@ shape_files_and_excels/*
 drive_parsing/June23_data
 drive_parsing/June29_data
 drive_parsing/raw_data
+drive_parsing/csvs
 *.csv
 *.csv#
 shape/Transmitters.*
