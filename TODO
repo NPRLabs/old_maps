@@ -58,3 +58,6 @@ Need to think about the flow of updating
     
 Front end: what we do and show on the front endis going to drive what we need on the backend
 I think this is where Model-View-Controller is important, but its kindof vague
+
+
+FIX output of csv and drive parsing, maybe using branches
