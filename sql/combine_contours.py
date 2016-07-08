@@ -9,8 +9,6 @@ import json
 
 
 
-#def check_loc(f, d):
-    #return f[
 def load_json(d):
     return (json.loads(d[0]),d[1])
 
