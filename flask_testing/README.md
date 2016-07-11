@@ -11,6 +11,12 @@ $ . venv/bin/activate
   ...
 ```
 
+####API
+```
+/ : base url with map
+/json/<west>/<south>/<east>/<north> : return geoJson with contours and centerpoints whose
+  centers are included in the bounding box specified
+```
 
 
 
