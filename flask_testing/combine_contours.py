@@ -1,24 +1,26 @@
-import argparse
-import time
 import sys
-import math
 import sqlite3
 import json
 
 
-
 def load_json(d):
+    '''helper to load individual json'''
     return (json.loads(d[0]),d[1])
 
 def combine_json(database, sql, w, s, e, n):
+    '''get the geojson contours from the database and combine them into one object
+    '''
     cur = database.cursor()
 
-    if not w:
+    #load every contour
+    if not w or not s or not e or not n:
         cur.execute(sql)
-        print 'uh oh'
+    #or load within a bounding box (may want to move sql over here)
     else:
         cur.execute(sql, (w, s, e, n))
 
+    # combine into geojson, with the center point and the contour in a 
+    # geometry collection
     features_list = [
         {
             "geometry":{"type":"GeometryCollection",
@@ -37,10 +39,6 @@ def combine_json(database, sql, w, s, e, n):
         if not lat in lats:
             lats.append(lat)
             filtered_list.append(f)
-
-    
-
-
 
     d = {"type":"FeatureCollection"}
     d['features'] = filtered_list
