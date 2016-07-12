@@ -37,16 +37,11 @@ def give_json():
     '''given a bounding box, 
        load the appropriate contours from the data base and return them as
        a single (geo)JSON object'''
-    w = request.args.get('w')
-    s = request.args.get('s')
-    n = request.args.get('n')
-    e = request.args.get('e')
+    w = float(request.args.get('w'))
+    s = float(request.args.get('s'))
+    n = float(request.args.get('n'))
+    e = float(request.args.get('e'))
     
-       
-    w = float(w)
-    s = float(s)
-    e = float(e)
-    n = float(n)
     
     # NEED TO THINK ABOUT SESSIONS TO keep track of current ones
     # would need to work with leaflet tho
@@ -62,7 +57,8 @@ def give_json():
             and lat > ?
             and long < ?
             and lat < ?
-            ''', w, s, e, n)
+            ORDER BY erph, erpv DESC
+            ''', (w, s, e, n), 100)
         return jsonify(**d)
         
         
