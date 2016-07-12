@@ -4,7 +4,11 @@ import combine_contours
 import sqlite3
 
 app = Flask(__name__)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
+
+if app.debug:
+    print 'IN DEBUG MODE, SETTING CACHE TIMEOUT TO 1'
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
+
 
 # sqlite3 database
 DATABASE = 'fcc.db'

@@ -31,7 +31,7 @@ function get_json(auto, e) {
         console.log('yeah')
         //need to think about waiting for autopan
     }
-    console.log("TEST STATIC2");
+    console.log("TEST STATIC4");
     bounds = mymap.getBounds()
     old_json = null;
     $.getJSON(
