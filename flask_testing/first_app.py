@@ -48,7 +48,7 @@ def give_json():
     # do we just add new ones?
     # does it redraw ones that already exist?
     #also bigger bounds, how do we track those?
-    
+    # ORDER BY erph, erpv DESC
     db = get_db()
     if db is not None:
         d = combine_contours.combine_json(db, 
@@ -57,8 +57,7 @@ def give_json():
             and lat > ?
             and long < ?
             and lat < ?
-            ORDER BY erph, erpv DESC
-            ''', (w, s, e, n), 100)
+            ''', (w, s, e, n), 35)
         return jsonify(**d)
         
         
