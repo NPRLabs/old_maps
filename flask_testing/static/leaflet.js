@@ -77,7 +77,7 @@ function get_json(auto, e) {
                     })
                 }  
         })
-        old_json = test_json
+        old_json = test_json;
         geojson_layer.addTo(mymap);
     })
 }
@@ -95,5 +95,13 @@ mymap.on('autopanstart', function(e) {
     get_json('auto', e);})
 
 //starup in nyc
-mymap.setView([40.7238, -73.6442], 13);
+mymap.setView([40.7238, -73.6442], 6);
+
+mymap.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180.0)));
+
+
+
+
+
+
 
