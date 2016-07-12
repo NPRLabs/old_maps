@@ -8,114 +8,21 @@
 </head>
     
 <body>  
-    {% if name %}
-    <h1>HELLO {{ name}} </h1>
-    {% else %}
-    <h1>HELLO NOONE </h1>
-    {% endif %}
     
-    
-    <div id="mapid" style="width: 2000px; height: 800px"></div>
-    
+    <div id="mapid" style="width: 1000px; height: 800px"></div>
     
     <!-- jquery and leaflet scripts -->
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script 
+        src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js">
+        </script>
     <script 
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
-    </script>
+        </script>
     
-    <script>
-        var mymap = L.map('mapid')
-
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 
-            '&copy; \
-            <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
-        
-        var geojsonMarkerOptions = {
-            radius: 300,
-            fillColor: "#f33",
-            color: "#f33",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8
-        };
-        
-        
-        // so we can clear it at each load event
-        var geojson_layer = null;
-        // for contour and 
-        var popup = L.popup();
-        var popup2 = L.popup();
-        function get_json(auto, e) {
-            if (auto === 'auto'){
-                console.log('yeah')
-                //need to think about waiting for autopan
-                
-                
-            } else if(geojson_layer !== null) { 
-                mymap.removeLayer(geojson_layer); 
-            }
-            bounds = mymap.getBounds()
-            
-            $.getJSON(
-                '/json/' + bounds.getWest() + '/' + bounds.getSouth()
-                + '/'+ bounds.getEast() + '/' + bounds.getNorth() ,          
-                function( test_json ) {
-                    geojson_layer = L.geoJson(test_json, {
-                        pointToLayer: function (feature, latlng) {
-                            return L.circle(latlng, 300, geojsonMarkerOptions)
-                                .on('click', function(e){
-                                    popup.setLatLng(latlng)
-                                    .setContent(JSON.stringify(feature.properties))
-                                    .openOn(mymap);
-                                })
-                                .on('mouseover', function(e){
-                                    e.target.setRadius(1000);
-                                })
-                                .on('mouseout', function(e){
-                                    e.target.setRadius(300);
-                                })
-                        },
-                        onEachFeature: function (feature, layer) {
-                            // add_general on click, not mouseover
-                            var coords = 
-                                feature.geometry.geometries[0].coordinates
-                            var coords2 = 
-                                feature.geometry.geometries[1].coordinates[0]
-                            var latlng = L.latLng(coords[1], coords[0]);
-                            var latlng2 = L.latLng(coords2[1], coords2[0]);
-                            layer.on('click', function(e){
-                                popup.setLatLng(latlng)
-                                .setContent(JSON.stringify(feature.properties));
-                                popup2.setLatLng(latlng2)
-                                .setContent(JSON.stringify(feature.properties));
-                                mymap.addLayer(popup);
-                                mymap.addLayer(popup2)
-                            })
-                        }  
-                })
-                geojson_layer.addTo(mymap);
-            })
-        }
-         
-         
-        // there is a zoom on start so this is extraneous
-        //mymap.on('load', function() {
-        //get_json();})
-        
-        mymap.on('dragend', function() {
-            get_json('', null);})
-        mymap.on('zoomend', function() {
-            get_json('', null);})
-        mymap.on('autopanstart', function(e) {
-            get_json('auto', e);})
-        
-        //starup in nyc
-        mymap.setView([40.7128, -74.0059], 13);
-        
-    </script>
+    
+    <script
+        src="{{ url_for('static', filename='leaflet.js') }}" >
+        </script>
     
 </body>
 </html>

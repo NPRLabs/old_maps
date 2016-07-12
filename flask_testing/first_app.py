@@ -1,9 +1,10 @@
-from flask import Flask, render_template, url_for, jsonify, g
+from flask import Flask, render_template, url_for, jsonify, g, request, send_file
 import json
 import combine_contours
 import sqlite3
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 # sqlite3 database
 DATABASE = 'fcc.db'
@@ -17,21 +18,31 @@ def get_db():
 
 #simply load the
 @app.route('/') 
-@app.route('/<name>') #deprecated testing
-def root_map(name=None):
+def root_map():
     '''simply load the leaflet js and set up the map''' 
-    return render_template('first.html', name=name)
+    return render_template('first.html')
 
-@app.route('/json/<west>/<south>/<east>/<north>')
-def give_json(west=None, south=None, east=None, north=None):
+'''
+@app.route('/js/leaflet.js')
+def give_js():
+    return send_file('static/leaflet.js', mimetype='application/javascript')
+'''
+
+@app.route('/json')
+def give_json():
     '''given a bounding box, 
        load the appropriate contours from the data base and return them as
        a single (geo)JSON object'''
+    w = request.args.get('w')
+    s = request.args.get('s')
+    n = request.args.get('n')
+    e = request.args.get('e')
+    
        
-    w = float(west)
-    s = float(south)
-    e = float(east)
-    n = float(north)
+    w = float(w)
+    s = float(s)
+    e = float(e)
+    n = float(n)
     
     # NEED TO THINK ABOUT SESSIONS TO keep track of current ones
     # would need to work with leaflet tho
