@@ -13,9 +13,11 @@ if app.debug:
 # sqlite3 database
 DATABASE = 'fcc.db'
 
+
 @app.route('/favicon.ico')
 def favicon():
     return send_file('static/favicon.ico')
+    
 
 # make the database accessible by get_db()
 def get_db():
