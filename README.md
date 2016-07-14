@@ -70,3 +70,6 @@ I think this is where Model-View-Controller is important, but its kindof vague
 
 
 FIX output of csv and drive parsing, maybe using branches
+
+
+
