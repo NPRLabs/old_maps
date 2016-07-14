@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+}
+#info_div{
+  flex: 0 0 10%
+}
+#mapid{
+  flex: 1
+}
