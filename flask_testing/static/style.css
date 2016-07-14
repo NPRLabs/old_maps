@@ -1,10 +1,16 @@
 .container {
-  display: flex;
-  flex-wrap:wrap
+    display: -webkit-box; 
+    display: -ms-flexbox; /* shouldn't break things, for compatibility */ 
+    display: -webkit-flex; /* shouldn't break things, for compatibility */ 
+    display: flex;
+    flex-wrap:wrap
+  
 }
 #info_div{
-  flex: 0 0 12%
+    /* need more compatibility */
+    
+    flex: 0 0 12%
 }
 #mapid{
-  flex: 1 0
+    flex: 1 0
 }
