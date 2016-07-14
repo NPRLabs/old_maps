@@ -23,8 +23,16 @@ var popup = L.marker();
 var popup2 = L.marker();
 
 function combine_json(old_json, new_json){
-
 }
+
+function pretty_json(json){
+    var s = ""
+    for (var key in json) {
+        s += key + ": " + json[key] + "<br>";
+    
+    }
+    return s;
+    }
 
 function get_json(auto, e) {
     if (auto === 'auto'){
@@ -69,8 +77,8 @@ function get_json(auto, e) {
                         //.setContent(JSON.stringify(feature.properties));
                         mymap.addLayer(popup);
                         mymap.addLayer(popup2)
-                        $('#info_div').text(JSON.stringify(feature.properties,
-                            null, 10));
+                        
+                        $('#info_div').html(pretty_json(feature.properties));
                     })
                 }  
         })
