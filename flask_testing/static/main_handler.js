@@ -50,7 +50,9 @@ function get_json(auto, e) {
             if(geojson_layer !== null) { 
                 mymap.removeLayer(geojson_layer); 
             }
-            
+            var myStyle = {
+                "color": "#ff7800",
+            };
             
             geojson_layer = L.geoJson(test_json, {
                 pointToLayer: function (feature, latlng) {
@@ -62,6 +64,7 @@ function get_json(auto, e) {
                             e.target.setRadius(300);
                         })
                 },
+                style: myStyle,
                 onEachFeature: function (feature, layer) {
                     // add_general on click, not mouseover
                     var coords = 
