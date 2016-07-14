@@ -1,9 +1,10 @@
 .container {
   display: flex;
+  flex-wrap:wrap
 }
 #info_div{
-  flex: 0 0 10%
+  flex: 0 0 12%
 }
 #mapid{
-  flex: 1
+  flex: 1 0
 }

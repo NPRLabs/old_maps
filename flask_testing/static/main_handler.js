@@ -47,11 +47,6 @@ function get_json(auto, e) {
             geojson_layer = L.geoJson(test_json, {
                 pointToLayer: function (feature, latlng) {
                     return L.circle(latlng, 300, geojsonMarkerOptions)
-                        .on('click', function(e){
-                            popup.setLatLng(latlng)
-                            .setContent(JSON.stringify(feature.properties))
-                            .openOn(mymap);
-                        })
                         .on('mouseover', function(e){
                             e.target.setRadius(1000);
                         })
@@ -74,6 +69,8 @@ function get_json(auto, e) {
                         .setContent(JSON.stringify(feature.properties));
                         mymap.addLayer(popup);
                         mymap.addLayer(popup2)
+                        $('#info_div').text(JSON.stringify(feature.properties,
+                            null, 10));
                     })
                 }  
         })
