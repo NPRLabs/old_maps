@@ -19,8 +19,8 @@ var geojsonMarkerOptions = {
 // so we can clear it at each load event
 var geojson_layer = null;
 // for contour and 
-var popup = L.popup();
-var popup2 = L.popup();
+var popup = L.marker();
+var popup2 = L.marker();
 
 function combine_json(old_json, new_json){
 
@@ -64,9 +64,9 @@ function get_json(auto, e) {
                     var latlng2 = L.latLng(coords2[1], coords2[0]);
                     layer.on('click', function(e){
                         popup.setLatLng(latlng)
-                        .setContent(JSON.stringify(feature.properties));
+                        //.setContent(JSON.stringify(feature.properties));
                         popup2.setLatLng(latlng2)
-                        .setContent(JSON.stringify(feature.properties));
+                        //.setContent(JSON.stringify(feature.properties));
                         mymap.addLayer(popup);
                         mymap.addLayer(popup2)
                         $('#info_div').text(JSON.stringify(feature.properties,
