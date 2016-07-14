@@ -13,8 +13,8 @@ test2.txt
 *.pyc
 sql/temp
 excels
-shape_files_and_excels/*
-!shape_files_and_excels/placeholder.txt
+zips/shape_files_and_excels/*
+!zips/shape_files_and_excels/placeholder.txt
 drive_parsing/June23_data
 drive_parsing/June29_data
 drive_parsing/raw_data
