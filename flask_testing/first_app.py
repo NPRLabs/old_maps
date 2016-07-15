@@ -43,11 +43,15 @@ def give_json():
     '''given a bounding box, 
        load the appropriate contours from the data base and return them as
        a single (geo)JSON object'''
+       
+    to_get = 35
     w = float(request.args.get('w'))
     s = float(request.args.get('s'))
     n = float(request.args.get('n'))
     e = float(request.args.get('e'))
-    
+    typ = str(request.args.get('type'))
+    if typ == 'am':
+        to_get = 1000
     
     # NEED TO THINK ABOUT SESSIONS TO keep track of current ones
     # would need to work with leaflet tho
@@ -58,12 +62,12 @@ def give_json():
     db = get_db()
     if db is not None:
         d = combine_contours.combine_json(db, 
-            '''SELECT con,member FROM fm WHERE con NOT NULL 
+            '''SELECT con,member FROM {} WHERE con NOT NULL 
             and long > ?
             and lat > ?
             and long < ?
             and lat < ?
-            ''', (w, s, e, n), 35)
+            '''.format(typ), (w, s, e, n), to_get)
         return jsonify(**d)
         
         

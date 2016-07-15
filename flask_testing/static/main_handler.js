@@ -1,3 +1,31 @@
+
+var am_or_fm = 'fm'
+var geojsonMarkerOptions = {
+    radius: 300,
+    fillColor: "#f33",
+    color: "#f33",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+var myStyle = {
+                "color": "#8000f0"
+};
+            
+$('#typeform').on('change', function() {
+    type = $('input[name=typeG]:checked', '#typeform').val();
+    console.log(type);
+    am_or_fm = type;
+    if (am_or_fm == 'am'){
+        myStyle = { "color": "#ff0000"};
+    } else {
+        myStyle = { "color": "#8000f0"};
+    }
+        
+    get_json('auto', null)
+})
+
 var mymap = L.map('mapid')
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -44,15 +72,12 @@ function get_json(auto, e) {
     old_json = null;
     $.getJSON(
         '/json', { 'w':bounds.getWest(),'s':bounds.getSouth(),
-        'e': bounds.getEast(), 'n': bounds.getNorth() },          
+        'e': bounds.getEast(), 'n': bounds.getNorth(), 'type':am_or_fm},          
         function( test_json ) {
                         
             if(geojson_layer !== null) { 
                 mymap.removeLayer(geojson_layer); 
             }
-            var myStyle = {
-                "color": "#ff7800",
-            };
             
             geojson_layer = L.geoJson(test_json, {
                 pointToLayer: function (feature, latlng) {
