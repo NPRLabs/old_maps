@@ -34,3 +34,5 @@ test.js
 ownparse.js
 *main_test_file.js
 sql/collect.js
+parser/*
+flask_testing/parser/
