@@ -32,8 +32,7 @@ def combine_json_qgis(database, sql):
             ("id", i+1)])
                         for i,con in enumerate( map(load_json, cur) ) ] 
 
-    d = {"type":"FeatureCollection"}
-    d['features'] = features_list
+    d = OrderedDict([('features',features_list), ("type","FeatureCollection")])
     database.commit()
     return d
 
