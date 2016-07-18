@@ -1,10 +1,10 @@
 
-var ready = true
+var ready = null;
 setInterval( function() {
-    if (ready !== null) {
-    ready('', null);
+    if (ready == true) {
+        get_json('', null);
     }
-    ready = null
+    ready = false
     }, 5000);
 var am_or_fm = 'fm'
 var geojsonMarkerOptions = {
@@ -128,19 +128,17 @@ function get_json(auto, e) {
 //get_json();})
 
 mymap.on('dragend', function() {
-    ready = get_json;
-    //get_json('', null);
+    ready = true;
     })
 mymap.on('zoomend', function() {
-    if(ready == true) { 
-        get_json('', null);
+    if(ready == null) { 
+        get_json('', null)
     } else {
-        ready = get_json;
+        ready = true;
     }
     })
 mymap.on('autopanstart', function(e) {
-ready = get_json;
-    //get_json('auto', e);
+    ready = true;
     })
 
 //starup in nyc

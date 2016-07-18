@@ -37,3 +37,6 @@ sql/collect.js
 parser/*
 flask_testing/parser/
 *.r3f
+leaflet.js
+leaflet.css
+images/
