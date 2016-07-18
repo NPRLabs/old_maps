@@ -1,4 +1,11 @@
 
+var ready = true
+setInterval( function() {
+    if (ready !== null) {
+    ready('', null);
+    }
+    ready = null
+    }, 5000);
 var am_or_fm = 'fm'
 var geojsonMarkerOptions = {
     radius: 300,
@@ -121,11 +128,20 @@ function get_json(auto, e) {
 //get_json();})
 
 mymap.on('dragend', function() {
-    get_json('', null);})
+    ready = get_json;
+    //get_json('', null);
+    })
 mymap.on('zoomend', function() {
-    get_json('', null);})
+    if(ready == true) { 
+        get_json('', null);
+    } else {
+        ready = get_json;
+    }
+    })
 mymap.on('autopanstart', function(e) {
-    get_json('auto', e);})
+ready = get_json;
+    //get_json('auto', e);
+    })
 
 //starup in nyc
 mymap.setView([40.7238, -73.6442], 6);
