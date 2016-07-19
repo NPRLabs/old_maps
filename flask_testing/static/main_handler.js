@@ -2,6 +2,7 @@
 //globals for handling user 
 var ready = null;
 var am_or_fm = 'fm'
+var mymap = L.map('mapid');
 
 
 // throttle requests for contours
@@ -26,7 +27,6 @@ var myStyle = {
                 "color": "#8000f0"
 };
 
-var mymap = L.map('mapid')
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: 
     '&copy; \
@@ -104,6 +104,26 @@ function get_json(auto, e) {
     })
 }
 
+
+function yes(e) {
+    console.log('yas')
+    alert(e)
+}
+function no(e) {
+    console.log('yas')
+    alert('no')
+}
+
+ 
+if('geolocation' in navigator){
+    alert('yes2')
+}else{
+   alert('no2')
+}
+
+
+
+navigator.geolocation.getCurrentPosition(yes, no)
 //deal with am and fm switch 
 $(function() {           
     $('#typeform').on('change', function() {
@@ -119,6 +139,7 @@ $(function() {
             
         get_json('auto', null)
     })
+    navigator.geolocation.getCurrentPosition(yes, no)
 })
  
  
@@ -146,11 +167,29 @@ mymap.on('autopanstart', function(e) {
     ready = true;
 })
 
-
-//starup in nyc
-mymap.setView([40.7238, -73.6442], 6);
-//set
 mymap.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180.0)));
+
+function onLocationFound(e) {
+    var radius = e.accuracy / 2;
+
+    L.marker(e.latlng).addTo(mymap)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(mymap);
+}
+
+mymap.on('locationfound', onLocationFound);
+
+function onLocationError(e) {
+    //starup in nyc
+    alert('uh oh')
+    mymap.setView([40.7238, -73.6442], 8);
+}
+
+
+mymap.on('locationerror', onLocationError);
+
+mymap.locate({setView: true, maxZoom: 13});
 
 
 
