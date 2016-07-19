@@ -120,6 +120,7 @@ $(function() {
         get_json('auto', null)
     })
     //navigator.geolocation.getCurrentPosition(yes, no)
+    window.scrollTo(0,1);
 })
  
  
@@ -142,6 +143,7 @@ mymap.on('zoomend', function() {
     } else {
         ready = true;
     }
+    window.scrollTo(0,1);
 })
 mymap.on('autopanstart', function(e) {
     ready = true;
@@ -162,12 +164,14 @@ mymap.on('locationfound', onLocationFound);
 
 function onLocationError(e) {
     mymap.setView([35.0820878,-106.956667], 8);
+    alert(e.message)
 }
 
 
 mymap.on('locationerror', onLocationError);
 
 mymap.locate({setView: true, maxZoom: 13});
+window.scrollTo(0,1);
 
 
 

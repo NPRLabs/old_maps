@@ -2,14 +2,16 @@
     display: -webkit-box; 
     display: -ms-flexbox; /* shouldn't break things, for compatibility */ 
     display: -webkit-flex; /* shouldn't break things, for compatibility */ 
-    display: flex;
+    /* display: flex; */
+    display: block;
     flex-wrap:wrap
   
 }
 
 #info_div, #typeform{
     /* need more compatibility */
-    flex: 0 0 20%
+    flex: 0 0 20%;
+    display:none;
 }
 #test_block{
     /* need more compatibility */
@@ -17,14 +19,15 @@
 }
 
 #mapid{
-    flex: 1 0;
+    /*flex: 1 0; */
     height: 100%
 }
 
 body{
     padding: 0;
+    margin:0;
 }
 html, body, .container{
-    height: 95%;
+    height: 100%;
 }
 
