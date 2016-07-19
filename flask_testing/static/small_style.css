@@ -2,8 +2,7 @@
     display: -webkit-box; 
     display: -ms-flexbox; /* shouldn't break things, for compatibility */ 
     display: -webkit-flex; /* shouldn't break things, for compatibility */ 
-    /* display: flex; */
-    display: block;
+    display: flex;
     flex-wrap:wrap
   
 }
@@ -11,7 +10,6 @@
 #info_div, #typeform{
     /* need more compatibility */
     flex: 0 0 20%;
-    display:none;
 }
 #test_block{
     /* need more compatibility */
@@ -19,7 +17,7 @@
 }
 
 #mapid{
-    /*flex: 1 0; */
+    flex: 1 0;
     height: 100%
 }
 
