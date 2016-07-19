@@ -104,26 +104,6 @@ function get_json(auto, e) {
     })
 }
 
-
-function yes(e) {
-    console.log('yas')
-    alert(e)
-}
-function no(e) {
-    console.log('yas')
-    alert('no')
-}
-
- 
-if('geolocation' in navigator){
-    alert('yes2')
-}else{
-   alert('no2')
-}
-
-
-
-navigator.geolocation.getCurrentPosition(yes, no)
 //deal with am and fm switch 
 $(function() {           
     $('#typeform').on('change', function() {
@@ -139,7 +119,7 @@ $(function() {
             
         get_json('auto', null)
     })
-    navigator.geolocation.getCurrentPosition(yes, no)
+    //navigator.geolocation.getCurrentPosition(yes, no)
 })
  
  
@@ -181,9 +161,7 @@ function onLocationFound(e) {
 mymap.on('locationfound', onLocationFound);
 
 function onLocationError(e) {
-    //starup in nyc
-    alert('uh oh')
-    mymap.setView([40.7238, -73.6442], 8);
+    mymap.setView([35.0820878,-106.956667], 8);
 }
 
 
