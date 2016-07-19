@@ -3,45 +3,61 @@
 <head>
     <title>Leaflet Quick Start Guide Example</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
     
+    <!-- deal with favicon and flask -->
     <link rel="shortcut icon" 
         href="{{ url_for('static', filename='favicon.ico') }}">
         
-    <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"> -->
+    <!-- No need to use their cdn
+        <link rel="stylesheet" 
+        href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"> -->
+        
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='leaflet.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <link rel="stylesheet" media="screen and (min-device-width: 800px)"
+         href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" media="screen and (max-device-width: 800px)"
+         href="{{ url_for('static', filename='small_style.css') }}">
+    
+    
 </head>
     
 <body>  
-    <p> EMPTY </p>
-    <form id="typeform">
-        <input type="radio" name="typeG" value="fm" checked="checked"/> FM 
-        <input type="radio" name="typeG" value="am"/> AM
-    </form>
     <div class="container">
-        <div id="info_div">info here test I am testing word wrap</div>
-        <div id="mapid" style="height: 800px"></div>
+        <div id="info_div">
+        <form id="typeform">
+            <input type="radio" name="typeG" value="fm" checked="checked"/> FM 
+            </br>
+            <input type="radio" name="typeG" value="am"/> AM
+        </form></br>
+        <span id="info_span"> Info from markers here</div></span>
+        <div id="mapid""></div>
     </div>
     <!-- jquery and leaflet scripts -->
     
     <!-- 
     <script 
         src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js">
-        </script> -->
+    </script> -->
         
+    <!-- probably need to organize these loads better -->
+    
     <script 
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
-        </script>
+    </script>
+    
     <script 
         type="text/javascript"
         src="{{ url_for('static', filename='leaflet.js') }}">
-        </script>
+    </script>
     
     <script
         type="text/javascript"
         src="{{ url_for('static', filename='main_handler.js') }}" >
-        </script>
+    </script>
     
 </body>
 </html>

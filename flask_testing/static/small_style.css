@@ -9,22 +9,22 @@
 
 #info_div, #typeform{
     /* need more compatibility */
-    flex: 0 0 12%
+    flex: 0 0 20%
 }
 #test_block{
     /* need more compatibility */
     display:block
 }
+
 #mapid{
     flex: 1 0;
-    height: 90%;
+    height: 100%
 }
 
 body{
     padding: 0;
 }
-
 html, body, .container{
-    height: 100%;
+    height: 95%;
 }
 

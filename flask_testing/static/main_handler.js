@@ -1,12 +1,19 @@
 
+//globals for handling user 
 var ready = null;
+var am_or_fm = 'fm'
+
+
+// throttle requests for contours
 setInterval( function() {
     if (ready == true) {
         get_json('', null);
     }
     ready = false
-    }, 5000);
-var am_or_fm = 'fm'
+    }, 1000);
+
+
+
 var geojsonMarkerOptions = {
     radius: 300,
     fillColor: "#f33",
@@ -15,41 +22,16 @@ var geojsonMarkerOptions = {
     opacity: 1,
     fillOpacity: 0.8
 };
-
 var myStyle = {
                 "color": "#8000f0"
 };
-            
-$('#typeform').on('change', function() {
-    type = $('input[name=typeG]:checked', '#typeform').val();
-    console.log(type);
-    am_or_fm = type;
-    if (am_or_fm == 'am'){
-        myStyle = { "color": "#ff0000"};
-    } else {
-        myStyle = { "color": "#8000f0"};
-    }
-        
-    get_json('auto', null)
-})
 
 var mymap = L.map('mapid')
-
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: 
     '&copy; \
     <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
-
-var geojsonMarkerOptions = {
-    radius: 300,
-    fillColor: "#f33",
-    color: "#f33",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-};
-
 
 // so we can clear it at each load event
 var geojson_layer = null;
@@ -113,7 +95,7 @@ function get_json(auto, e) {
                         mymap.addLayer(popup);
                         mymap.addLayer(popup2)
                         
-                        $('#info_div').html(pretty_json(feature.properties));
+                        $('#info_span').html(pretty_json(feature.properties));
                     })
                 }  
         })
@@ -121,29 +103,53 @@ function get_json(auto, e) {
         geojson_layer.addTo(mymap);
     })
 }
- 
- 
-// there is a zoom on start so this is extraneous
-//mymap.on('load', function() {
-//get_json();})
 
+//deal with am and fm switch 
+$(function() {           
+    $('#typeform').on('change', function() {
+        type = $('input[name=typeG]:checked', '#typeform').val();
+        console.log(type);
+        am_or_fm = type;
+        //get_json('', null)
+        if (am_or_fm == 'am'){
+            myStyle = { "color": "#ff0000"};
+        } else {
+            myStyle = { "color": "#8000f0"};
+        }
+            
+        get_json('auto', null)
+    })
+})
+ 
+ 
+/*
+function clear_popups(){
+    mymap.removeLayer(popup); 
+    mymap.removeLayer(popup2);
+    }
+*/
+     
 mymap.on('dragend', function() {
     ready = true;
-    })
+})
 mymap.on('zoomend', function() {
+    // there is a zoom on start so this is extraneous
+    //mymap.on('load', function()
+    //initial load
     if(ready == null) { 
         get_json('', null)
     } else {
         ready = true;
     }
-    })
+})
 mymap.on('autopanstart', function(e) {
     ready = true;
-    })
+})
+
 
 //starup in nyc
 mymap.setView([40.7238, -73.6442], 6);
-
+//set
 mymap.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180.0)));
 
 
