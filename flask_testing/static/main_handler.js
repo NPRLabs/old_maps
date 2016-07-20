@@ -35,6 +35,9 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 
 // so we can clear it at each load event
 var geojson_layer = null;
+var marked_geojson_layer = null;
+var f = null;
+var f_flag = null;
 // for contour and 
 var popup = L.marker();
 var popup2 = L.marker();
@@ -51,6 +54,12 @@ function pretty_json(json){
     return s;
     }
 
+function comp_cent(f, d) {
+    var test1 = f.geometry.geometries[0]['coordinates'][0] == d.geometry.geometries[0]['coordinates'][0]
+    var test2 = f.geometry.geometries[0]['coordinates'][1] == d.geometry.geometries[0]['coordinates'][1]
+    return test1 && test2
+    }
+
 function get_json(auto, e) {
     if (auto === 'auto'){
         console.log('yeah')
@@ -63,7 +72,7 @@ function get_json(auto, e) {
         '/json', { 'w':bounds.getWest(),'s':bounds.getSouth(),
         'e': bounds.getEast(), 'n': bounds.getNorth(), 'type':am_or_fm},          
         function( test_json ) {
-                        
+            f_flag = null;            
             if(geojson_layer !== null) { 
                 mymap.removeLayer(geojson_layer); 
             }
@@ -87,20 +96,44 @@ function get_json(auto, e) {
                         feature.geometry.geometries[1].coordinates[0]
                     var latlng = L.latLng(coords[1], coords[0]);
                     var latlng2 = L.latLng(coords2[1], coords2[0]);
+                    if (f !== null && comp_cent(f, feature)){
+                            console.log('hmm')
+                    }
+                    console.log(feature)
                     layer.on('click', function(e){
                         popup.setLatLng(latlng)
                         //.setContent(JSON.stringify(feature.properties));
                         popup2.setLatLng(latlng2)
                         //.setContent(JSON.stringify(feature.properties));
                         mymap.addLayer(popup);
-                        mymap.addLayer(popup2)
+                        mymap.addLayer(popup2);
+                        console.log(layer);
+                        console.log(marked_geojson_layer);
+                        console.log(feature);
+                        marked_geojson_layer = layer
+                        f = feature
+                        console.log(f)
+                        console.log('lol3')
                         
                         $('#info_span').html(pretty_json(feature.properties));
                     })
+                    if (f !== null && comp_cent(f, feature)){
+                        f_flag = true;
+                    }
                 }  
         })
         old_json = test_json;
         geojson_layer.addTo(mymap);
+        if(marked_geojson_layer !== null){
+            mymap.removeLayer(marked_geojson_layer)
+             console.log('lol2')
+        } 
+        if(marked_geojson_layer !== null && f_flag == null){
+            marked_geojson_layer.addTo(mymap);
+             console.log('lol2')
+             f_flag = true;
+        } 
+            
     })
 }
 
