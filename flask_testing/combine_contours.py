@@ -46,12 +46,14 @@ def combine_json(database, sql, bounds, max_results=10000):
     database.commit()
     return d
 
-def make_into_pol(geo_dict):
+def make_into_pol(geo_dict, num):
+    if num == 0:
+        return geo_dict
     geo_dict['type'] = 'Polygon'
     geo_dict['coordinates'] = [ geo_dict['coordinates'] ] 
     return geo_dict
 
-def combine_json_qgis(database, sql):
+def combine_json_qgis(database, sql, num):
     '''get the geojson contours from the database and combine them into one object
     '''
     cur = database.cursor()
@@ -63,7 +65,7 @@ def combine_json_qgis(database, sql):
     # geometry collection
     features_list = [
         {
-            "geometry":make_into_pol(con[0]['features'][1]['geometry']),
+            "geometry":make_into_pol(con[0]['features'][num]['geometry'], num),
             "type":"Feature",
             "properties":dict(con[0]['features'][0]["properties"], 
                                             **{"memberstatus":con[1]}),
@@ -79,7 +81,7 @@ if __name__ == '__main__':
     db = sqlite3.connect('fcc.db')
     cur = db.cursor()
 
-    d = combine_json_qgis(db, '''SELECT con,member FROM {} WHERE con NOT NULL'''.format(sys.argv[1]))
+    d = combine_json_qgis(db, '''SELECT con,member FROM {} WHERE con NOT NULL'''.format(sys.argv[1]), int(sys.argv[2]))
     #print 'var test_json = '
     print json.dumps(d)
     db.close()
