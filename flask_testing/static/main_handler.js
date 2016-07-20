@@ -120,6 +120,8 @@ $(function() {
         type = $('input[name=typeG]:checked', '#typeform').val();
         console.log(type);
         am_or_fm = type;
+        mymap.removeLayer(popup); 
+        mymap.removeLayer(popup2);
         //get_json('', null)
         if (am_or_fm == 'am'){
             myStyle = { "color": "#ff0000"};
