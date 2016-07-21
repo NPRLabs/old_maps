@@ -24,7 +24,14 @@ var geojsonMarkerOptions = {
     fillOpacity: 0.8
 };
 var myStyle = {
-                "color": "#8000f0"
+                "color": "#8000f0",
+                "fillColor": "#f33",
+                "fillOpacity": 0.0,
+};
+var myStyleFilled = {
+                "color": "#8000f0",
+                "fillColor": "#f33",
+                "fillOpacity": 0.2,
 };
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -101,6 +108,7 @@ function get_json(auto, e) {
                     }
                     console.log(feature)
                     layer.on('click', function(e){
+                        layer.setStyle(myStyleFilled);
                         popup.setLatLng(latlng)
                         //.setContent(JSON.stringify(feature.properties));
                         popup2.setLatLng(latlng2)
@@ -161,6 +169,10 @@ $(function() {
         } else {
             myStyle = { "color": "#8000f0"};
         }
+        
+        marked_geojson_layer = null;
+        f = null;
+        f_flag = null;
             
         get_json('auto', null)
     })

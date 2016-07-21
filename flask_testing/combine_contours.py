@@ -25,7 +25,7 @@ def combine_json(database, sql, bounds, max_results=10000):
         {
             "geometry":{"type":"GeometryCollection",
                         "geometries": [ con[0]['features'][0]['geometry'],
-                                        con[0]['features'][1]['geometry'] ]},
+                                        make_into_pol(con[0]['features'][1]['geometry'], 1) ]},
                         "type":"Feature",
                         "properties":dict(con[0]['features'][0]["properties"], 
                                             **{"memberstatus":con[1]}),
