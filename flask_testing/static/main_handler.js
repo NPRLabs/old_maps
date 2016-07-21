@@ -108,6 +108,10 @@ function get_json(auto, e) {
                     }
                     console.log(feature)
                     layer.on('click', function(e){
+                        if(marked_geojson_layer !== null){
+                            marked_geojson_layer.setStyle(myStyle);
+                        }
+                        
                         layer.setStyle(myStyleFilled);
                         popup.setLatLng(latlng)
                         //.setContent(JSON.stringify(feature.properties));
@@ -122,11 +126,14 @@ function get_json(auto, e) {
                         f = feature
                         console.log(f)
                         console.log('lol3')
-                        
                         $('#info_span').html(pretty_json(feature.properties));
                     })
                     if (f !== null && comp_cent(f, feature)){
                         f_flag = true;
+                    }
+                    if (f !== null && comp_cent(f, feature)){
+                        mymap.removeLayer(layer);
+                        f_flag = null;
                     }
                 }  
         })
@@ -135,7 +142,7 @@ function get_json(auto, e) {
         if(marked_geojson_layer !== null){
             mymap.removeLayer(marked_geojson_layer)
              console.log('lol2')
-        } 
+        }
         if(marked_geojson_layer !== null && f_flag == null){
             marked_geojson_layer.addTo(mymap);
              console.log('lol2')
