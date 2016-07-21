@@ -1,9 +1,11 @@
 
 //globals for handling user 
 var ready = null;
+var geo_layer = null;
 var am_or_fm = 'fm'
-var mymap = L.map('mapid');
+var mymap = L.map('mapid', {autoZIndex:false});
 
+var new_geojson = null
 
 // throttle requests for contours
 setInterval( function() {
@@ -27,11 +29,16 @@ var myStyle = {
                 "color": "#8000f0",
                 "fillColor": "#f33",
                 "fillOpacity": 0.0,
+                stroke:true
 };
 var myStyleFilled = {
                 "color": "#8000f0",
                 "fillColor": "#f33",
                 "fillOpacity": 0.2,
+                //stroke:false
+};
+var clearStyle = {
+                stroke:false
 };
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -39,7 +46,7 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     '&copy; \
     <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
-
+var test;
 // so we can clear it at each load event
 var geojson_layer = null;
 var marked_geojson_layer = null;
@@ -79,6 +86,7 @@ function get_json(auto, e) {
         '/json', { 'w':bounds.getWest(),'s':bounds.getSouth(),
         'e': bounds.getEast(), 'n': bounds.getNorth(), 'type':am_or_fm},          
         function( test_json ) {
+            console.log(test_json);
             f_flag = null;            
             if(geojson_layer !== null) { 
                 mymap.removeLayer(geojson_layer); 
@@ -103,51 +111,79 @@ function get_json(auto, e) {
                         feature.geometry.geometries[1].coordinates[0]
                     var latlng = L.latLng(coords[1], coords[0]);
                     var latlng2 = L.latLng(coords2[1], coords2[0]);
-                    if (f !== null && comp_cent(f, feature)){
-                            console.log('hmm')
-                    }
-                    console.log(feature)
+                    
+                    
                     layer.on('click', function(e){
-                        if(marked_geojson_layer !== null){
-                            marked_geojson_layer.setStyle(myStyle);
+                        coords = layer.feature.geometry
+                                 .geometries[1].coordinates
+                        new_layer = {
+                            type: "Feature",
+                            properties: layer.feature.properties,
+                            geometry: {
+                                geometries: [
+                                    layer.feature.geometry.geometries[0],
+                                    {
+                                        type: "Polygon",
+                                        coordinates: [coords]
+                                    }
+                                    ],
+                                    type: "GeometryCollection"
+                                }
+                            
+                        };
+                        
+                        if (new_geojson !== null) {
+                            mymap.removeLayer(new_geojson);
                         }
                         
-                        layer.setStyle(myStyleFilled);
+                        if (geo_layer !== null) {
+                            console.log('YES');
+                            geo_layer.setStyle(myStyle);
+                            geojson_layer.setStyle(myStyle);
+                        }
+                        layer.setStyle(clearStyle);
+                        new_geojson = L.geoJson(new_layer, {
+                            style: myStyleFilled
+                            })
+                            
+                        // hacky way of ordering
+                        mymap.removeLayer(geojson_layer);
+                        new_geojson.addTo(mymap); 
+                        geojson_layer.addTo(mymap); 
+
+                        //setpopups and add info
                         popup.setLatLng(latlng)
-                        //.setContent(JSON.stringify(feature.properties));
                         popup2.setLatLng(latlng2)
-                        //.setContent(JSON.stringify(feature.properties));
                         mymap.addLayer(popup);
                         mymap.addLayer(popup2);
-                        console.log(layer);
-                        console.log(marked_geojson_layer);
-                        console.log(feature);
-                        marked_geojson_layer = layer
-                        f = feature
-                        console.log(f)
-                        console.log('lol3')
                         $('#info_span').html(pretty_json(feature.properties));
+                        
+                        geo_layer = layer
+                        f = feature
+                        
                     })
+                    
                     if (f !== null && comp_cent(f, feature)){
-                        f_flag = true;
+                        layer.setStyle(clearStyle);
                     }
-                    if (f !== null && comp_cent(f, feature)){
-                        mymap.removeLayer(layer);
-                        f_flag = null;
-                    }
+                    
                 }  
         })
-        old_json = test_json;
+        //old_json = test_json;
+        if(new_geojson !== null){
+            mymap.removeLayer(geojson_layer);
+            new_geojson.addTo(mymap);
+        }    
         geojson_layer.addTo(mymap);
-        if(marked_geojson_layer !== null){
-            mymap.removeLayer(marked_geojson_layer)
+        /*if(marked_geojson_layer !== null){
+            //mymap.removeLayer(marked_geojson_layer)
              console.log('lol2')
         }
         if(marked_geojson_layer !== null && f_flag == null){
             marked_geojson_layer.addTo(mymap);
              console.log('lol2')
              f_flag = true;
-        } 
+        } */
             
     })
 }
