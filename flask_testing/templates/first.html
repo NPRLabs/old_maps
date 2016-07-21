@@ -33,7 +33,7 @@
             </br>
             <input type="radio" name="typeG" value="am"/> AM
         </form></br>
-        <button id="fsbtn">Go fullscreen</button>
+        <button id="fsbtn" value="go">Go fullscreen</button></br>
         <span id="info_span"> Info from markers here</div></span>
         <div id="mapid" allowfullscreen></div>
     </div>
@@ -58,6 +58,10 @@
     <script
         type="text/javascript"
         src="{{ url_for('static', filename='main_handler.js') }}" >
+    </script>
+    <script
+        type="text/javascript"
+        src="{{ url_for('static', filename='full_screen_handler.js') }}" >
     </script>
     
 </body>

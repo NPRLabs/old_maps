@@ -152,15 +152,6 @@ function get_json(auto, e) {
     })
 }
 
-function fullscreenit(element) {
-  if(element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if(element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if(element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  }
-}
 
 //deal with am and fm switch 
 $(function() {           
@@ -184,11 +175,6 @@ $(function() {
         get_json('auto', null)
     })
     //navigator.geolocation.getCurrentPosition(yes, no)
-    var fsbtn = document.getElementById("fsbtn");
-    var map_elem = document.getElementById("mapid");
-    fsbtn.addEventListener("click", function() {
-      fullscreenit(document.documentElement)
-    }, false);
 })
  
  
