@@ -29,7 +29,6 @@ var myStyle = {
                 "color": "#8000f0",
                 "fillColor": "#f33",
                 "fillOpacity": 0.0,
-                stroke:true
 };
 var myStyleFilled = {
                 "color": "#8000f0",
@@ -76,17 +75,17 @@ function comp_cent(f, d) {
 
 function get_json(auto, e) {
     if (auto === 'auto'){
-        console.log('yeah')
+        //console.log('yeah')
         //need to think about waiting for autopan
     }
-    console.log("TEST STATIC4");
+    
     bounds = mymap.getBounds()
     old_json = null;
     $.getJSON(
         '/json', { 'w':bounds.getWest(),'s':bounds.getSouth(),
         'e': bounds.getEast(), 'n': bounds.getNorth(), 'type':am_or_fm},          
         function( test_json ) {
-            console.log(test_json);
+            //console.log(test_json);
             f_flag = null;            
             if(geojson_layer !== null) { 
                 mymap.removeLayer(geojson_layer); 
@@ -137,7 +136,6 @@ function get_json(auto, e) {
                         }
                         
                         if (geo_layer !== null) {
-                            console.log('YES');
                             geo_layer.setStyle(myStyle);
                             geojson_layer.setStyle(myStyle);
                         }
@@ -193,7 +191,6 @@ function get_json(auto, e) {
 $(function() {           
     $('#typeform').on('change', function() {
         type = $('input[name=typeG]:checked', '#typeform').val();
-        console.log(type);
         am_or_fm = type;
         mymap.removeLayer(popup); 
         mymap.removeLayer(popup2);
