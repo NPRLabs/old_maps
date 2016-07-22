@@ -29,11 +29,13 @@ var myStyle = {
                 "color": "#8000f0",
                 "fillColor": "#f33",
                 "fillOpacity": 0.0,
+                stroke:true
 };
 var myStyleFilled = {
-                "color": "#8000f0",
+                "color": "#000000",
                 "fillColor": "#f33",
                 "fillOpacity": 0.2,
+                stroke:true
                 //stroke:false
 };
 var clearStyle = {
