@@ -1,13 +1,16 @@
 
-//globals for handling user 
+// what kind of contours to display
+var am_or_fm = 'fm';
+
+var map = L.map('mapid', {autoZIndex:false});
+
+
+/* 
+    limit getting geojson requests to one second a zoom and then immediatly a
+    drag will get json once. This is a really simple and effective optimization
+*/
+
 var ready = null;
-var geo_layer = null;
-var am_or_fm = 'fm'
-var mymap = L.map('mapid', {autoZIndex:false});
-
-var new_geojson = null
-
-// throttle requests for contours
 setInterval( function() {
     if (ready == true) {
         get_json('', null);
@@ -16,64 +19,88 @@ setInterval( function() {
     }, 1000);
 
 
-
-var geojsonMarkerOptions = {
-    radius: 300,
+/* Global Style Options */
+var geojsoncenterMarkerOptions = {
+    radius: 2.5,
     fillColor: "#f33",
     color: "#f33",
     weight: 1,
     opacity: 1,
-    fillOpacity: 0.8
-};
-var myStyle = {
-                "color": "#8000f0",
-                "fillColor": "#f33",
-                "fillOpacity": 0.0,
-                stroke:true
-};
-var myStyleFilled = {
-                "color": "#000000",
-                "fillColor": "#f33",
-                "fillOpacity": 0.2,
-                stroke:true
-                //stroke:false
-};
-var clearStyle = {
-                stroke:false
+    fillOpacity: 1
 };
 
+var fmStyle = { 
+    "color": "#8000f0",
+    "fillColor": "#8000f0",
+    "fillOpacity": 1.0,
+    weight:7,
+    stroke:true
+};
+var fmStyleFilled = { 
+    "color": "#000057",
+    "fillColor": "#8000f0",
+    "fillOpacity": 0.2,
+    weight:3,
+    stroke:true
+    //stroke:false
+};
+var amStyle = { 
+    "color": "#ff0000",
+    "fillColor": "#ff0000",
+    "fillOpacity": 1.0,
+    weight:7,
+    stroke:true
+};
+var amStyleFilled = { 
+    "color": "#990000",
+    "fillColor": "#ff0000",
+    "fillOpacity": 0.2,
+    weight:3,
+    stroke:true
+    //stroke:false
+};
+
+// for clearing double-drawn features
+var clearStyle = { stroke:false };
+
+var contourStyle = fmStyle;
+var contourStyleFilled = fmStyleFilled;
+
+
+// set up the OSM tiles
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: 
     '&copy; \
     <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(mymap);
-var test;
-// so we can clear it at each load event
-var geojson_layer = null;
-var marked_geojson_layer = null;
-var f = null;
-var f_flag = null;
-// for contour and 
-var popup = L.marker();
-var popup2 = L.marker();
+}).addTo(map);
 
-function combine_json(old_json, new_json){
-}
+
+var geojsonLayer = null;
+var selectedGeojson = null;
+var selectedFeature = null;
+var hiddenContourLayer = null;
+
+
+var centerMarker = L.marker();
+var contourMarker = L.marker();
+
 
 function pretty_json(json){
-    var s = ""
+    var s = "";
     for (var key in json) {
         s += key + ": " + json[key] + "<br>";
     
     }
     return s;
-    }
+}
 
-function comp_cent(f, d) {
-    var test1 = f.geometry.geometries[0]['coordinates'][0] == d.geometry.geometries[0]['coordinates'][0]
-    var test2 = f.geometry.geometries[0]['coordinates'][1] == d.geometry.geometries[0]['coordinates'][1]
-    return test1 && test2
-    }
+function compareFeatureCenters(f, d) {
+    var test1 = f.geometry.geometries[0]['coordinates'][0] 
+                == d.geometry.geometries[0]['coordinates'][0];
+    var test2 = f.geometry.geometries[0]['coordinates'][1] 
+                == d.geometry.geometries[0]['coordinates'][1];
+    return test1 && test2;
+}
 
 function get_json(auto, e) {
     if (auto === 'auto'){
@@ -81,29 +108,29 @@ function get_json(auto, e) {
         //need to think about waiting for autopan
     }
     
-    bounds = mymap.getBounds()
-    old_json = null;
+    bounds = map.getBounds()
     $.getJSON(
         '/json', { 'w':bounds.getWest(),'s':bounds.getSouth(),
         'e': bounds.getEast(), 'n': bounds.getNorth(), 'type':am_or_fm},          
         function( test_json ) {
             //console.log(test_json);
-            f_flag = null;            
-            if(geojson_layer !== null) { 
-                mymap.removeLayer(geojson_layer); 
+            //f_flag = null;            
+            if(geojsonLayer !== null) { 
+                map.removeLayer(geojsonLayer); 
             }
             
-            geojson_layer = L.geoJson(test_json, {
+            geojsonLayer = L.geoJson(test_json, {
                 pointToLayer: function (feature, latlng) {
-                    return L.circle(latlng, 300, geojsonMarkerOptions)
-                        .on('mouseover', function(e){
-                            e.target.setRadius(1000);
-                        })
-                        .on('mouseout', function(e){
-                            e.target.setRadius(300);
-                        })
+                    //return //L.circle(latlng, 300, geojsoncenterMarkerOptions)
+                    return L.circleMarker(latlng, geojsoncenterMarkerOptions)
+                        //.on('mouseover', function(e){
+                        //    e.target.setRadius(1000);
+                       // })
+                       // .on('mouseout', function(e){
+                       //     e.target.setRadius(300);
+                       // })
                 },
-                style: myStyle,
+                style: contourStyle,
                 onEachFeature: function (feature, layer) {
                     // add_general on click, not mouseover
                     var coords = 
@@ -116,8 +143,10 @@ function get_json(auto, e) {
                     
                     layer.on('click', function(e){
                         coords = layer.feature.geometry
-                                 .geometries[1].coordinates
-                        new_layer = {
+                                    .geometries[1].coordinates
+                                    
+                        //(filled) Polygon of the selected feature      
+                        new_poly = {
                             type: "Feature",
                             properties: layer.feature.properties,
                             geometry: {
@@ -133,57 +162,51 @@ function get_json(auto, e) {
                             
                         };
                         
-                        if (new_geojson !== null) {
-                            mymap.removeLayer(new_geojson);
+                        if (selectedGeojson !== null) {
+                            map.removeLayer(selectedGeojson);
                         }
                         
-                        if (geo_layer !== null) {
-                            geo_layer.setStyle(myStyle);
-                            geojson_layer.setStyle(myStyle);
-                        }
+                        
+                        if (hiddenContourLayer !== null) {
+                            hiddenContourLayer.setStyle(contourStyle);
+                            geojsonLayer.setStyle(contourStyle);
+                        } 
+                        
                         layer.setStyle(clearStyle);
-                        new_geojson = L.geoJson(new_layer, {
-                            style: myStyleFilled
+                        selectedGeojson = L.geoJson(new_poly, {
+                            style: contourStyleFilled
                             })
                             
                         // hacky way of ordering
-                        mymap.removeLayer(geojson_layer);
-                        new_geojson.addTo(mymap); 
-                        geojson_layer.addTo(mymap); 
+                        map.removeLayer(geojsonLayer);
+                        selectedGeojson.addTo(map); 
+                        geojsonLayer.addTo(map); 
 
-                        //setpopups and add info
-                        popup.setLatLng(latlng)
-                        popup2.setLatLng(latlng2)
-                        mymap.addLayer(popup);
-                        mymap.addLayer(popup2);
+                        //setcenterMarkers and add info
+                        centerMarker.setLatLng(latlng)
+                        contourMarker.setLatLng(latlng2)
+                        map.addLayer(centerMarker);
+                        map.addLayer(contourMarker);
                         $('#info_span').html(pretty_json(feature.properties));
                         
-                        geo_layer = layer
-                        f = feature
+                        hiddenContourLayer = layer
+                        selectedFeature = feature
                         
                     })
                     
-                    if (f !== null && comp_cent(f, feature)){
+                    if (selectedFeature !== null 
+                            && compareFeatureCenters(selectedFeature, feature)){
                         layer.setStyle(clearStyle);
                     }
                     
                 }  
         })
-        //old_json = test_json;
-        if(new_geojson !== null){
-            mymap.removeLayer(geojson_layer);
-            new_geojson.addTo(mymap);
+        
+        if(selectedGeojson !== null){
+            map.removeLayer(geojsonLayer);
+            selectedGeojson.addTo(map);
         }    
-        geojson_layer.addTo(mymap);
-        /*if(marked_geojson_layer !== null){
-            //mymap.removeLayer(marked_geojson_layer)
-             console.log('lol2')
-        }
-        if(marked_geojson_layer !== null && f_flag == null){
-            marked_geojson_layer.addTo(mymap);
-             console.log('lol2')
-             f_flag = true;
-        } */
+        geojsonLayer.addTo(map);
             
     })
 }
@@ -194,38 +217,36 @@ $(function() {
     $('#typeform').on('change', function() {
         type = $('input[name=typeG]:checked', '#typeform').val();
         am_or_fm = type;
-        mymap.removeLayer(popup); 
-        mymap.removeLayer(popup2);
+        map.removeLayer(centerMarker); 
+        map.removeLayer(contourMarker);
         //get_json('', null)
         if (am_or_fm == 'am'){
-            myStyle = { "color": "#ff0000"};
+            contourStyle = amStyle;
+            contourStyleFilled = amStyleFilled;
         } else {
-            myStyle = { "color": "#8000f0"};
+            contourStyle = fmStyle;
+            contourStyleFilled = fmStyleFilled;
         }
         
-        marked_geojson_layer = null;
-        f = null;
-        f_flag = null;
+        
+        selectedFeature = null;
+        if(selectedGeojson !== null){
+            map.removeLayer(selectedGeojson);
+        }
+        selectedGeojson = null;
             
         get_json('auto', null)
     })
-    //navigator.geolocation.getCurrentPosition(yes, no)
 })
  
  
-/*
-function clear_popups(){
-    mymap.removeLayer(popup); 
-    mymap.removeLayer(popup2);
-    }
-*/
      
-mymap.on('dragend', function() {
+map.on('dragend', function() {
     ready = true;
 })
-mymap.on('zoomend', function() {
+map.on('zoomend', function() {
     // there is a zoom on start so this is extraneous
-    //mymap.on('load', function()
+    //map.on('load', function()
     //initial load
     if(ready == null) { 
         get_json('', null)
@@ -233,32 +254,32 @@ mymap.on('zoomend', function() {
         ready = true;
     }
 })
-mymap.on('autopanstart', function(e) {
+map.on('autopanstart', function(e) {
     ready = true;
 })
 
-mymap.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180.0)));
+map.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180.0)));
 
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
 
-    L.marker(e.latlng).addTo(mymap)
+    L.centerMarker(e.latlng).addTo(map)
         
 
-    L.circle(e.latlng, radius).addTo(mymap);
+    L.circle(e.latlng, radius).addTo(map);
 }
 
-mymap.on('locationfound', onLocationFound);
+map.on('locationfound', onLocationFound);
 
 function onLocationError(e) {
-    mymap.setView([35.0820878,-106.956667], 7);
+    map.setView([35.0820878,-106.956667], 7);
     console.log('test' + e.message)
 }
 
 
-mymap.on('locationerror', onLocationError);
+map.on('locationerror', onLocationError);
 
-mymap.locate({setView: true, maxZoom: 7});
+map.locate({setView: true, maxZoom: 7});
 
 
 
