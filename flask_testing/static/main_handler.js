@@ -37,14 +37,17 @@ var fmStyle = {
     stroke:true
 };
 var fmStyleFilled = { 
+    radius: 2.5,
     "color": "#000057",
     "fillColor": "#8000f0",
     "fillOpacity": 0.2,
     weight:3,
+    opacity: 1,
     stroke:true
     //stroke:false
 };
 var amStyle = { 
+    radius: 2.5,
     "color": "#ff0000",
     "fillColor": "#ff0000",
     "fillOpacity": 1.0,
@@ -52,10 +55,12 @@ var amStyle = {
     stroke:true
 };
 var amStyleFilled = { 
+    radius: 2.5,
     "color": "#990000",
     "fillColor": "#ff0000",
     "fillOpacity": 0.2,
     weight:3,
+    opacity: 1,
     stroke:true
     //stroke:false
 };
@@ -174,8 +179,14 @@ function get_json(auto, e) {
                         
                         layer.setStyle(clearStyle);
                         selectedGeojson = L.geoJson(new_poly, {
-                            style: contourStyleFilled
-                            })
+                            style: contourStyleFilled,
+                            pointToLayer: function (feature, latlng) {
+                    
+                                return L.circleMarker(latlng,
+                                     geojsoncenterMarkerOptions)
+
+                            }
+                        })
                             
                         // hacky way of ordering
                         map.removeLayer(geojsonLayer);

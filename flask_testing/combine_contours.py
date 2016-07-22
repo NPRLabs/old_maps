@@ -37,10 +37,10 @@ def combine_json(database, sql, bounds, max_results=10000):
                         "geometries": [ 
                             remove_z_coord(con[0]['features'][0]['geometry'],  
                                             True),
-                            remove_z_coord(
-                                make_into_pol(con[0]['features'][1]['geometry'], 
-                                    0), 
-                                        False) 
+                            make_into_pol(remove_z_coord(
+                                con[0]['features'][1]['geometry'], 
+                                    False), 
+                                        0) 
                                         ]
                         },
                         "type":"Feature",
