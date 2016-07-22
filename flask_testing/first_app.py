@@ -4,7 +4,7 @@ import combine_contours
 import sqlite3
 
 app = Flask(__name__)
-
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 if app.debug:
     print 'IN DEBUG MODE, SETTING CACHE TIMEOUT TO 1'
     app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1

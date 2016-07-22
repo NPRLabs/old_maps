@@ -6,7 +6,17 @@ import json
 def load_json(d):
     '''helper to load individual json'''
     return (json.loads(d[0]),d[1])
-
+    
+def remove_z_coord(a, is_point):
+    if is_point:
+        a['coordinates'] = a['coordinates'][0:2]
+        return a
+    new_list = []
+    for i, coords in enumerate(a['coordinates']):
+        new_list.append(coords[0:2])
+        
+    a['coordinates'] = new_list
+    return a
 def combine_json(database, sql, bounds, max_results=10000):
     '''get the geojson contours from the database and combine them into one object
     '''
@@ -24,8 +34,15 @@ def combine_json(database, sql, bounds, max_results=10000):
     features_list = [
         {
             "geometry":{"type":"GeometryCollection",
-                        "geometries": [ con[0]['features'][0]['geometry'],
-                                        make_into_pol(con[0]['features'][1]['geometry'], 0) ]},
+                        "geometries": [ 
+                            remove_z_coord(con[0]['features'][0]['geometry'],  
+                                            True),
+                            remove_z_coord(
+                                make_into_pol(con[0]['features'][1]['geometry'], 
+                                    0), 
+                                        False) 
+                                        ]
+                        },
                         "type":"Feature",
                         "properties":dict(con[0]['features'][0]["properties"], 
                                             **{"memberstatus":con[1]}),
