@@ -23,7 +23,7 @@ def update_tv_sql():
     
     
 def get_contour(cur, table, callsign_sql):
-    cur.execute('''SELECT id,callsign,appid,freq,city,state,fn FROM {} WHERE
+    cur.execute('''SELECT id,callsign,appid,freq,city,state,fn,lat,long FROM {} WHERE
                     callsign LIKE ? and member ISNULL'''.format(table),
                         (callsign_sql,))
     output = cur.fetchall()
@@ -32,11 +32,26 @@ def get_contour(cur, table, callsign_sql):
     
     if table == 'fm':
         c = output[0]
-        load_fm_contour(c[1],c[2],c[3],c[4].replace(' ','_').upper(),c[5])
+        (contour, needs_fixing) = load_fm_contour(
+                    c[1],c[2],c[3],c[4].replace(' ','_').upper(),c[5])
     elif table == 'am':
         c = output[0]
-        load_fm_contour(c[6],c[1],c[2],c[3],c[4].replace(' ','_').upper(),c[5])
-    
+        (contour, needs_fixing) = load_fm_contour(
+                    c[6],c[1],c[2],c[3],c[4].replace(' ','_').upper(),c[5])
+
+    # redundant load, needs refactoring
+    testjs = json.loads(contour)
+    if testjs['geometries'][0]['geometry']['coordinates'][0] == 0.0 and
+        testjs['geometries'][0]['geometry']['coordinates'][1] == 0.0
+        return fix_shift(testjs,c[7],c[8])
+    return contour
+        
+def fix_shift(d,lat, lon):
+    for i,x in testjs['geometries'][1]['geometry']['coordinates']:
+        new_c = [(x[0]+lon), (x[1]+lat)]
+        testjs['geometries'][1]['geometry']['coordinates'][i] = new_c
+    testjs['geometries'][0]['geometry']['coordinates'] = [lon, lat]
+
 
 def cread():
     db = sqlite3.connect('fcc.db')

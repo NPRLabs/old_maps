@@ -27,10 +27,21 @@ def load_from_website(callsign,appid,freq,city,state):
     ses = kml.splitlines()
     return ses[0] + '\n<kml>' + '\n'.join(ses[2:])
     
-def load_fm_contour(callsign,appid,freq,city,state):
+def load_fm_contour(callsign,appid,freq,city,state, lat, lon):
     kml = load_from_website(callsign,appid,freq,city,state)
-    s = write_to_string(parse_kml_to_dict(kml, None), None)
+    testjs = parse_kml_to_dict(kml, None)
+    if testjs['geometries'][0]['geometry']['coordinates'][0] == 0.0 and
+        testjs['geometries'][0]['geometry']['coordinates'][1] == 0.0
+        testjs = fix_shift(testjs,lat,lon)
+    s = write_to_string(testjs, None)
     return s
+
+def fix_shift(testjs,lat, lon):
+    for i,x in testjs['geometries'][1]['geometry']['coordinates']:
+        new_c = [(x[0]+lon), (x[1]+lat)]
+    if testjs['geometries'][1]['geometry']['coordinates'][i] = new_c
+    testjs['geometries'][0]['geometry']['coordinates'] = [lon, lat]
+    return testjs
 
 if __name__ == '__main__':
     db = sqlite3.connect('fcc.db')
