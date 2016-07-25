@@ -13,7 +13,7 @@ var map = L.map('mapid', {autoZIndex:false});
 var ready = null;
 setInterval( function() {
     if (ready == true) {
-        get_json('', null);
+        redraw('', null);
     }
     ready = false
     }, 1000);
@@ -107,7 +107,7 @@ function compareFeatureCenters(f, d) {
     return test1 && test2;
 }
 
-function get_json(auto, e) {
+function redraw(auto, e) {
     if (auto === 'auto'){
         //console.log('yeah')
         //need to think about waiting for autopan
@@ -231,7 +231,7 @@ $(function() {
         am_or_fm = type;
         map.removeLayer(centerMarker); 
         map.removeLayer(contourMarker);
-        //get_json('', null)
+        //redraw('', null)
         if (am_or_fm == 'am'){
             contourStyle = amStyle;
             contourStyleFilled = amStyleFilled;
@@ -247,7 +247,7 @@ $(function() {
         }
         selectedGeojson = null;
             
-        get_json('auto', null)
+        redraw('auto', null)
     })
 })
  
@@ -261,7 +261,7 @@ map.on('zoomend', function() {
     //map.on('load', function()
     //initial load
     if(ready == null) { 
-        get_json('', null)
+        redraw('', null)
     } else {
         ready = true;
     }
