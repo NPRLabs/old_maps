@@ -36,6 +36,7 @@ ownparse.js
 sql/collect.js
 parser/*
 flask_testing/parser/
+flask_app/parser/
 *.r3f
 leaflet.js
 leaflet.css

@@ -1,0 +1,28 @@
+data/
+├── 23June
+│   ├── activity_1226896418.gpx
+│   ├── activity_1226896418.tcx
+│   ├── ...
+│   ├── data1
+│   │   ├── CAPT00.XML
+│   │   ├── ...
+│   │   ├── CAPT82.XML
+│   │   ├── ...
+│   │   └── MONITOR.XML
+│   └── data2
+│       ├── CAPT00.XML
+│       ├── ...
+│       ├── CAPT99.XML
+│       ├── ...
+│       └── MONITOR.XML
+├── 29June
+│   ├── activity_1235005498.gpx
+│   ├── activity_1235005509.gpx
+│   └── datas
+│       ├── CAPT00.XML
+│       ├── ...
+│       ├── CAPT38.XML
+│       └── ...
+└── ...
+
+

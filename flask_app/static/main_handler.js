@@ -197,7 +197,8 @@ function get_json(auto, e) {
                         centerMarker.setLatLng(latlng)
                         contourMarker.setLatLng(latlng2)
                         map.addLayer(centerMarker);
-                        map.addLayer(contourMarker);
+                        // with changing colors no need
+                        //map.addLayer(contourMarker);
                         $('#info_span').html(pretty_json(feature.properties));
                         
                         hiddenContourLayer = layer
@@ -274,7 +275,7 @@ map.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180.0)));
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
 
-    L.centerMarker(e.latlng).addTo(map)
+    L.marker(e.latlng).addTo(map)
         
 
     L.circle(e.latlng, radius).addTo(map);
@@ -283,6 +284,7 @@ function onLocationFound(e) {
 map.on('locationfound', onLocationFound);
 
 function onLocationError(e) {
+    // abq!
     map.setView([35.0820878,-106.956667], 7);
     console.log('test' + e.message)
 }
