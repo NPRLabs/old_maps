@@ -1,10 +1,10 @@
 import sys
 import sqlite3
 import csv
-from amcon import load_am_contour
+from am_contour_dl import load_am_contour
 # (fid, callsign,ant,appid,freq,city,state)
 # cur.execute('''UPDATE am SET con=? WHERE id=?''', (s, ID))
-from download_contours_to_table import load_fm_contour
+from fm_contour_dl import load_fm_contour
 # (callsign,ant,appid,freq,city,state)
 #cur.execute('''UPDATE fm SET con=? WHERE id=?''', (s, ID))
 
