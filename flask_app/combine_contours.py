@@ -8,6 +8,8 @@ def load_json(d):
     return (json.loads(d[0]),d[1])
     
 def remove_z_coord(a, is_point):
+    '''should remove the 3rd coord if it is present, 
+        and do nothing if it isn't'''
     if is_point:
         a['coordinates'] = a['coordinates'][0:2]
         return a
