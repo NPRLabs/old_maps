@@ -6,7 +6,7 @@
 ####MONITOR.XML files
 $ python drivedata_parser.py outputfile.csv -m frequency [all files to combine]
 #####example:
-$ python drivedata_parser.py july29csvs/july29capt.csv -m 88.5 july29/**/MONITOR.XML
+$ python drivedata_parser.py july29csvs/july29mon.csv -m 88.5 july29/**/MONITOR.XML
 ```
 
 ```
