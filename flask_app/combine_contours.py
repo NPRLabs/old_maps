@@ -66,6 +66,7 @@ def combine_json(database, sql, bounds, max_results=10000):
     return d
 
 def make_into_pol(geo_dict, num):
+    ''' if num is not 0, convert a linestring into a polygon'''
     if num == 0:
         return geo_dict
     geo_dict['type'] = 'Polygon'
@@ -97,6 +98,8 @@ def combine_json_qgis(database, sql, num):
     return d
 
 if __name__ == '__main__':
+    '''The main app combines the json of ALL the contours in the table
+        specified in the first command line arg'''
     db = sqlite3.connect('fcc.db')
     cur = db.cursor()
 

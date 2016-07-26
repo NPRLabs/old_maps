@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet Quick Start Guide Example</title>
+    <title>NPR Labs Mapping Project</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-    
+    <meta name="viewport" 
+        content="width=device-width, initial-scale=1.0, 
+                 maximum-scale=1.0, user-scalable=no" />
+   
     <!-- deal with favicon and flask -->
     <link rel="shortcut icon" 
         href="{{ url_for('static', filename='favicon.ico') }}">
         
     <!-- No need to use their cdn
         <link rel="stylesheet" 
-        href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"> -->
-        
-    
+        href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"> --> 
     <link rel="stylesheet" href="{{ url_for('static', filename='leaflet.css') }}">
+    
+    
     
     <link rel="stylesheet" media="screen and (min-device-width: 800px)"
          href="{{ url_for('static', filename='style.css') }}">
@@ -37,19 +38,19 @@
         <span id="info_span"> Info from markers here</div></span>
         <div id="mapid" allowfullscreen></div>
     </div>
+
     <!-- jquery and leaflet scripts -->
     
-    <!-- 
-    <script 
-        src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js">
-    </script> -->
-        
     <!-- probably need to organize these loads better -->
     
     <script 
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
     </script>
     
+    <!-- 
+    <script 
+        src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js">
+    </script> -->
     <script 
         type="text/javascript"
         src="{{ url_for('static', filename='leaflet.js') }}">

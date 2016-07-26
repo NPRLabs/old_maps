@@ -1,5 +1,5 @@
 
-function fullscreenit(element) {
+function attemptFullscreen(element) {
   if(element.requestFullscreen) {
   console.log('1')
     element.requestFullscreen();
@@ -12,7 +12,7 @@ function fullscreenit(element) {
   }
 }
 
-function unfullscreenit(element) {
+function leaveFullscreen(element) {
   if(document.exitFullscreen) {
   console.log('1')
     document.exitFullscreen();
@@ -26,16 +26,16 @@ function unfullscreenit(element) {
 }
 
 //deal with am and fm switch 
+//requires jquery and a specific button id
 $(function() {           
-
     $('#fsbtn').on('click', function() {
       console.log('asdfasdfadsf')
       if($(this).val() == "go"){   
-        fullscreenit(document.documentElement);
+        attemptFullscreen(document.documentElement);
         $(this).val("exit");
         $(this).text("Exit Fullscreen");
       } else  {
-        unfullscreenit(document.documentElement);
+        leaveFullscreen(document.documentElement);
         $(this).val("go");
         $(this).text("Go Fullscreen");
       }

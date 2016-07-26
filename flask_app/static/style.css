@@ -1,7 +1,10 @@
 .container {
+    /* need more compatibility */
     display: -webkit-box; 
-    display: -ms-flexbox; /* shouldn't break things, for compatibility */ 
-    display: -webkit-flex; /* shouldn't break things, for compatibility */ 
+    display: -moz-box;
+    display: -ms-flexbox; 
+    display: -webkit-flex;
+    
     display: flex;
     flex-wrap:wrap
   
@@ -9,6 +12,11 @@
 
 #info_div, #typeform{
     /* need more compatibility */
+    -webkit-box-flex: 0 0 12%;
+    -moz-box-flex: 0 0 12%;
+    -webkit-flex: 0 0 12%;
+    -ms-flex: 0 0 12%;
+    
     flex: 0 0 12%
 }
 #test_block{
@@ -16,6 +24,12 @@
     display:block
 }
 #mapid{
+    /* need more compatibility */
+    -webkit-box-flex: 1 0;
+    -moz-box-flex: 1 0;
+    -webkit-flex: 1 0;
+    -ms-flex: 1 0;
+    
     flex: 1 0;
     height: 90%;
 }
