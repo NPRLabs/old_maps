@@ -21,8 +21,11 @@ IN DEBUG MODE, SETTING CACHE TIMEOUT TO 1
 ####API
 ```
 / : base url with map
-/json/<west>/<south>/<east>/<north> : return geoJson with contours and centerpoints whose
-  centers are included in the bounding box specified
+/json?w=<west>&s=<south>&e=<east>&n=<north>&type=<type> : return geoJson with contours and centerpoints whose
+  centers are included in the bounding box specified by w,s,e,n parameters.
+  These latitudes and longitudes should be in decimal degrees.
+  The type should be (at this point just) am and fm, for what kind of contours to specify
+Possibly in the future different kinds of contours could be specified in similar ways with different base urls
 ```
 
 

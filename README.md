@@ -5,7 +5,7 @@ sqlite tools in [sql](sql), along with python scripts to download and fill it
 Tool for updating the database with member_station info (in progress) [updater](updater)
 
 The main flask app is in [flask_app](flask_app), along with the database being
-used and the 
+used and all the assets
 
 Tools for parsing drive test data (mostly for use in arc and qgis) in 
 [drive_parsing](drive_parsing)
