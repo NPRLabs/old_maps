@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, jsonify, g, request, send_fil
 import json
 import combine_contours
 import sqlite3
+from geopy_handler import get_location
 
 app = Flask(__name__)
 
@@ -36,6 +37,13 @@ def get_db():
 def root_map():
     '''simply load the leaflet js and set up the map''' 
     return render_template('first.html')
+
+
+# Handle api requests
+@app.route('/geocode')
+def location_handler():
+    q = request.args.get('q')
+    return get_location(q)
 
 
 # Handle api requests

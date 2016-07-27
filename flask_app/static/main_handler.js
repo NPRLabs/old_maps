@@ -294,6 +294,18 @@ map.on('locationerror', onLocationError);
 
 map.locate({setView: true, maxZoom: 7});
 
+$(function() {           
+    $('#geocodebtn').on('click', function() {
+        $.ajax(
+            {
+                url:"/geocode?q=" + encodeURI($('#address').val()), 
+                success: function(data) { 
+                console.log(data)
+                map.setView(data.split(','), 15) 
+                redraw('', null)}
+                })
+    })
+})
 
 
 
