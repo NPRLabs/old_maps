@@ -40,14 +40,14 @@ Because there is a difference between data available for each type of signal, ea
 one has different columns.
 
 ######Links to the full desciption of each table:
-[fm](schemas/fm_schema.md)
+[fm](schema_descriptions/fm_schema.md)
 
-[am](schemas/am_schema.md)
+[am](schema_descriptions/am_schema.md)
 
-[tv](schemas/tv_schema.md)
+[tv](schema_descriptions/tv_schema.md)
 
 Organizations schema:
-[orgs](schemas/org_schema.md)
+[orgs](schema_descriptions/org_schema.md)
 
 
 
