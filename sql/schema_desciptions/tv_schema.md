@@ -1,12 +1,3 @@
-
-#####FM
-| Name     | TYPE    | Description
-| -------- | ------- | --------------------------------------------------------
-| id       | INTEGER | unique id, consequence of database design
-| callsign | TEXT    | **Mostly** unique sign, some lack a callsign
-| freq     | REAL    | Real valued frequency
-| service  | TEXT    | type of service, likely only "FM" will matter
-| channel  | TEXT    | related to frequency
 #####TV
 | Name     | TYPE    | Description
 | -------- | ------- | --------------------------------------------------------
@@ -37,9 +28,6 @@
 | appid    | INTEGER | application id, often same as other stations in one org
 | virtchan | INTEGER | channel the user sees
 | org      | INTEGER | used to mark similar orgs, unused now
-
-#####POSSIBLE Uniqueness:
-We are storing everything
 
 
 

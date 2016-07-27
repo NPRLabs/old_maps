@@ -46,6 +46,9 @@ one has different columns.
 
 [tv](schemas/tv_schema.md)
 
+Organizations schema:
+[orgs](schemas/org_schema.md)
+
 
 
 
