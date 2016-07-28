@@ -298,10 +298,16 @@ $(function() {
     $('#geocodebtn').on('click', function() {
         $.ajax(
             {
-                url:"/geocode?q=" + encodeURI($('#address').val()), 
+                url:"/geocode?q=" + encodeURI($('#address_input').val()), 
                 success: function(data) { 
                 console.log(data)
-                map.setView(data.split(','), 15) 
+                var marker = new L.marker(data.split(','))
+                marker.on('click', function(e) {
+                    map.removeLayer(marker);
+                })
+                marker.addTo(map);
+                
+                map.setView(data.split(','), 13) 
                 redraw('', null)}
                 })
     })
