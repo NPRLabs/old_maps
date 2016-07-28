@@ -43,10 +43,17 @@ html, body, .container{
 }
 
 #address {
+    width:95%;
+    margin-right:10px
+}
+#address input{
+    width:95%;
+    margin-right:10px
+}
+#address_input {
     background-color:#ededed;
-    margin-right:1%
-    }
-
+    margin-right:10px
+}
 
 
 

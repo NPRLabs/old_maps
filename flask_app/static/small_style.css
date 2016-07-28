@@ -34,52 +34,58 @@ html, body, .container{
 }
 
 
-#address {
-    background-color:#ededed;
-    width:90%;
-    margin-right:10px
-    }
     
-    
+/*  and (orientation:portrait) */
 @media all and (orientation:portrait) {
     #address {
-        background-color:#ededed;
         width:90%;
         margin-right:10px   
     }
-.container {
-    /* need more compatibility */
-    display: -webkit-box; 
-    display: -moz-box;
-    display: -ms-flexbox; 
-    display: -webkit-flex;
+    #address_input {
+        background-color:#ededed;
+    }
     
-    display: flex;
-    flex-wrap:wrap;
-    flex-direction: column
-  
-}
-}
+    .container {
+        /* need more compatibility */
+        display: -webkit-box; 
+        display: -moz-box;
+        display: -ms-flexbox; 
+        display: -webkit-flex;
+        
+        display: flex;
+        flex-wrap:wrap;
+        flex-direction: column-reverse;
+    }
     
-@media all and (orientation:landscape) {
+}
+
+/*  and (orientation:landscape) */
+@media all and (min-device-aspect-ratio: 1/1) and (orientation:landscape) {
 
     #address {
-        background-color:#ff0000;
         width:90%;
         margin-right:10px
     }
-    .container {
-    /* need more compatibility */
-    display: -webkit-box; 
-    display: -moz-box;
-    display: -ms-flexbox; 
-    display: -webkit-flex;
+    #address input{
+        width:90%;
+    }
+    #address_input {
+        background-color:#ff0000;
+        margin-right:10px
+    }
     
-    display: flex;
-    flex-wrap:wrap;
-    flex-direction: row;
-  
-}
+    .container {
+        /* need more compatibility */
+        display: -webkit-box; 
+        display: -moz-box;
+        display: -ms-flexbox; 
+        display: -webkit-flex;
+        
+        display: flex;
+        flex-wrap:wrap;
+        flex-direction: row; 
+    }
+    
 }
 
 
