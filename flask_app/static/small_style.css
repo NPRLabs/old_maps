@@ -1,14 +1,3 @@
-.container {
-    /* need more compatibility */
-    display: -webkit-box; 
-    display: -moz-box;
-    display: -ms-flexbox; 
-    display: -webkit-flex;
-    
-    display: flex;
-    flex-wrap:wrap
-  
-}
 
 #info_div, #typeform{
     /* need more compatibility */
@@ -43,4 +32,74 @@ body{
 html, body, .container{
     height: 100%;
 }
+
+
+#address {
+    background-color:#ededed;
+    width:90%;
+    margin-right:10px
+    }
+    
+    
+@media all and (orientation:portrait) {
+    #address {
+        background-color:#ededed;
+        width:90%;
+        margin-right:10px   
+    }
+.container {
+    /* need more compatibility */
+    display: -webkit-box; 
+    display: -moz-box;
+    display: -ms-flexbox; 
+    display: -webkit-flex;
+    
+    display: flex;
+    flex-wrap:wrap;
+    flex-direction: column
+  
+}
+}
+    
+@media all and (orientation:landscape) {
+
+    #address {
+        background-color:#ff0000;
+        width:90%;
+        margin-right:10px
+    }
+    .container {
+    /* need more compatibility */
+    display: -webkit-box; 
+    display: -moz-box;
+    display: -ms-flexbox; 
+    display: -webkit-flex;
+    
+    display: flex;
+    flex-wrap:wrap;
+    flex-direction: row;
+  
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
