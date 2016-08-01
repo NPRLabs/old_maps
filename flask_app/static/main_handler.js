@@ -21,7 +21,7 @@ setInterval( function() {
 
 /* Global Style Options */
 var geojsoncenterMarkerOptions = {
-    radius: 2.5,
+    radius: 2,
     fillColor: "#f33",
     color: "#f33",
     weight: 1,
@@ -30,15 +30,16 @@ var geojsoncenterMarkerOptions = {
 };
 
 var fmStyle = { 
+    radius: 6,
     "color": "#8000f0",
     "fillColor": "#8000f0",
     "fillOpacity": 1.0,
-    weight:7,
+    weight:5,
     stroke:true
 };
 var fmStyleFilled = { 
-    radius: 2.5,
-    "color": "#000057",
+    radius: 2,
+    "color": "#4D00BD",
     "fillColor": "#8000f0",
     "fillOpacity": 0.2,
     weight:3,
@@ -47,15 +48,15 @@ var fmStyleFilled = {
     //stroke:false
 };
 var amStyle = { 
-    radius: 2.5,
+    radius: 6,
     "color": "#ff0000",
     "fillColor": "#ff0000",
     "fillOpacity": 1.0,
-    weight:7,
+    weight:9,
     stroke:true
 };
 var amStyleFilled = { 
-    radius: 2.5,
+    radius: 2,
     "color": "#990000",
     "fillColor": "#ff0000",
     "fillOpacity": 0.2,
