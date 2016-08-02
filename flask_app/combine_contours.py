@@ -96,6 +96,24 @@ def combine_json_qgis(database, sql, num):
     d['features'] = features_list
     database.commit()
     return d
+    
+    
+def get_center_for_callsign(database, callsign, typ):
+    '''get the center of the contour for the callsign (or at least the first one 
+        in the database
+    '''
+    cur = database.cursor()
+
+    latlng = cur.execute(
+        '''SELECT con FROM {} WHERE callsign LIKE ? and con NOT NULL
+        '''.format(typ), (callsign+'%',) )
+
+    # combine into geojson, with the center point and the contour in a 
+    # geometry collection
+    if latlng:
+        return str(remove_z_coord(json.loads(latlng.fetchone()[0])['features'][0]['geometry']
+                            , True)['coordinates'])
+
 
 if __name__ == '__main__':
     '''The main app combines the json of ALL the contours in the table

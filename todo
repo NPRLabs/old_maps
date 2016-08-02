@@ -1,3 +1,11 @@
+
+small unknown bugs:
+while inserting address on mobile and moving to landscape the css doesn't switch
+need to think about how lat/long are slightly different than the contour center
+
+
+
+
 TODO
 Things to pay attention to:
 membership in excel but not in fcc:

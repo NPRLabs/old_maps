@@ -83,6 +83,16 @@ def give_json():
             and lat < ?
             '''.format(typ), (w, s, e, n), max_contours)
         return jsonify(**d)
+ 
+# Handle callsign requests
+@app.route('/callsign')
+def give_callsign():
+    cs = request.args.get('cs')
+    typ = request.args.get('type')
+    db = get_db()
+    cur = db.cursor()
+    if db is not None:
+        return combine_contours.get_center_for_callsign(db, cs, typ)
         
         
         

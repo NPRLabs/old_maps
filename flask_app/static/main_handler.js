@@ -34,7 +34,7 @@ var fmStyle = {
     "color": "#8000f0",
     "fillColor": "#8000f0",
     "fillOpacity": 1.0,
-    weight:5,
+    weight:9,
     stroke:true
 };
 var fmStyleFilled = { 
