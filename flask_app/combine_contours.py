@@ -111,8 +111,10 @@ def get_center_for_callsign(database, callsign, typ):
     # combine into geojson, with the center point and the contour in a 
     # geometry collection
     if latlng:
-        return str(remove_z_coord(json.loads(latlng.fetchone()[0])['features'][0]['geometry']
-                            , True)['coordinates'])
+        l = remove_z_coord(json.loads(latlng.fetchone()[0])
+                            ['features'][0]['geometry']
+                            , True)['coordinates']
+        return str(l[1])+','+str(l[0])
 
 
 if __name__ == '__main__':

@@ -303,13 +303,25 @@ $(function() {
                 success: function(data) { 
                 console.log(data)
                 var marker = new L.marker(data.split(','))
-                marker.on('click', function(e) {
-                    map.removeLayer(marker);
+                    marker.on('click', function(e) {
+                        map.removeLayer(marker);
+                    })
+                    marker.addTo(map);
+                    
+                    map.setView(data.split(','), 13) 
+                    redraw('', null)}
                 })
-                marker.addTo(map);
-                
-                map.setView(data.split(','), 13) 
-                redraw('', null)}
+    })
+    $('#csbtn').on('click', function() {
+        $.ajax(
+            {
+                url:"/callsign?cs=" 
+                        + encodeURI($('#address_input').val())
+                        + "&type=" + am_or_fm, 
+                success: function(data) { 
+                    console.log(data)
+                    map.setView(data.replace(/[{}]/g, "").split(','), 13) 
+                    }
                 })
     })
 })
