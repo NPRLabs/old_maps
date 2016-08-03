@@ -6,7 +6,7 @@
     display: -webkit-flex;
     
     display: flex;
-    flex-wrap:wrap
+    flex-wrap:wrap;
   
 }
 
@@ -19,10 +19,7 @@
     
     flex: 0 0 12%
 }
-#test_block{
-    /* need more compatibility */
-    display:block
-}
+
 #mapid{
     /* need more compatibility */
     -webkit-box-flex: 1 0;
@@ -31,7 +28,7 @@
     -ms-flex: 1 0;
     
     flex: 1 0;
-    height: 90%;
+    height: 88%;
 }
 
 body{
@@ -40,7 +37,6 @@ body{
 
 html, body, .container{
     height: 100%;
-    padding:0
 }
 
 #address {
