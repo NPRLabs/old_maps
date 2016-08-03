@@ -1,8 +1,9 @@
 
-#test_block, #typeform, #address, #fsbtn, #csbtn, #info_div {
+#test_block, #typeform, #address, #fsbtn, #csbtn{
     /* need more compatibility */
     display:none
 }
+
 
 #mapid {
     height: 100%;
