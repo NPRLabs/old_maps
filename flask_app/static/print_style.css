@@ -40,7 +40,6 @@ body{
 
 html, body, .container{
     height: 100%;
-    padding:0
 }
 
 #address {
@@ -55,7 +54,6 @@ html, body, .container{
     background-color:#ededed;
     margin-right:10px
 }
-
 
 
 

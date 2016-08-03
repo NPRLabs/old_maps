@@ -146,7 +146,8 @@ function redraw(auto, e) {
                     var latlng = L.latLng(coords[1], coords[0]);
                     var latlng2 = L.latLng(coords2[1], coords2[0]);
                     
-                    
+                    console.log(layer.feature.properties)
+                    console.log(layer.feature.id)
                     layer.on('click', function(e){
                         coords = layer.feature.geometry
                                     .geometries[1].coordinates

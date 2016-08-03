@@ -3,6 +3,7 @@ small unknown bugs:
 while inserting address on mobile and moving to landscape the css doesn't switch
 need to think about how lat/long are slightly different than the contour center
 make more precise the callsign finding fallthrough
+caching--may be hard
 
 
 
