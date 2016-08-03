@@ -107,14 +107,25 @@ def get_center_for_callsign(database, callsign, typ):
     latlng = cur.execute(
         '''SELECT con FROM {} WHERE callsign LIKE ? and con NOT NULL
         '''.format(typ), (callsign+'%',) )
-
+    latlng = latlng.fetchone()
     # combine into geojson, with the center point and the contour in a 
     # geometry collection
     if latlng:
-        l = remove_z_coord(json.loads(latlng.fetchone()[0])
+        l = remove_z_coord(json.loads(latlng[0])
                             ['features'][0]['geometry']
                             , True)['coordinates']
         return str(l[1])+','+str(l[0])
+    else:
+        latlng = cur.execute(
+        '''SELECT con FROM {} WHERE callsign LIKE ? and con NOT NULL
+        '''.format(typ), ('%'+callsign+'%',) )
+        latlng = latlng.fetchone()
+        if latlng:
+            l = remove_z_coord(json.loads(latlng[0])
+                                ['features'][0]['geometry']
+                                , True)['coordinates']
+            return str(l[1])+','+str(l[0])
+        
 
 
 if __name__ == '__main__':
