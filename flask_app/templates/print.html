@@ -18,38 +18,16 @@
     
     
     
-    <link rel="stylesheet" media="screen and (min-device-width: 800px)"
-         href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" media="screen and (max-device-width: 800px)"
-         href="{{ url_for('static', filename='small_style.css') }}">
     <link rel="stylesheet" media="print"
+         href="{{ url_for('static', filename='print_style.css') }}">
+    <link rel="stylesheet"
          href="{{ url_for('static', filename='print_style.css') }}">
     
     
 </head>
     
 <body>  
-    <div class="container">
-        <div id="info_div">
-        <form id="typeform">
-            <input type="radio" name="typeG" value="fm" checked="checked"/> FM 
-            </br>
-            <input type="radio" name="typeG" value="am"/> AM
-        </form></br>
-        <button id="fsbtn" value="go">Go fullscreen</button></br>
-        <div id="address">
-            <form id="typeform2">
-                Address:</br>
-                <input type="text" name="typeG" id="address_input"/>
-            </form>
-            <button id="geocodebtn" value="go">Zoom to address</button>
-            <button id="csbtn" value="go">Zoom to callsign</button>
-        </br></br>
-        </div>
-        
-        <span id="info_span"> Info from markers here</div></span>
-        <div id="mapid" allowfullscreen></div>
-    </div>
+        <div id="mapid"></div>
 
     <!-- jquery and leaflet scripts -->
     

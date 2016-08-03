@@ -37,6 +37,12 @@ def get_db():
 def root_map():
     '''simply load the leaflet js and set up the map''' 
     return render_template('first.html')
+    
+# simply load the main page
+@app.route('/print') 
+def print_map():
+    '''simply load the leaflet js and set up the map''' 
+    return render_template('print.html')
 
 
 # Handle api requests
