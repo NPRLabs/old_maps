@@ -38,12 +38,14 @@ def root_map():
     '''simply load the leaflet js and set up the map''' 
     return render_template('first.html')
     
+    
+"""
 # simply load the main page
 @app.route('/print') 
 def print_map():
     '''simply load the leaflet js and set up the map''' 
     return render_template('print.html')
-
+"""
 
 # Handle api requests
 @app.route('/geocode')
@@ -106,7 +108,9 @@ def give_callsign():
 def close_connection(exception):
     '''close database on ending of flask run'''
     db = getattr(g, '_database', None)
+    print 'here1'
     if db is not None:
+        print 'here2'
         db.close()
 
 
