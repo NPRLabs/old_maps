@@ -103,14 +103,14 @@ def give_callsign():
         return combine_contours.get_center_for_callsign(db, cs, typ)
         
         
-        
+
 @app.teardown_appcontext
 def close_connection(exception):
-    '''close database on ending of flask run'''
+    '''close database on ending of a connection closing, so the db will
+        always be closed after any request. Not sure if double-closing is a
+        problem '''
     db = getattr(g, '_database', None)
-    print 'here1'
     if db is not None:
-        print 'here2'
         db.close()
 
 
