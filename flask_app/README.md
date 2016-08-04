@@ -27,10 +27,15 @@ IN DEBUG MODE, SETTING CACHE TIMEOUT TO 1
   The type should be (at this point just) am and fm, for what kind of contours to specify
 /geocode?q=<query> : takes a URI-encoded address as a query and returns a lat,lng of the address, 
   depends on the accuracy of the OSM geocoding api
-/callsign?cs=<callsign>&type=<type> returns the lat,lng of the given callsign for the given callsign for the given service type (am and fm right now). If there is an inexact match, gives the first one in the database; ie. 'AMU' or 'amu' match WAMU and KAMU so only one is given.
+/callsign?cs=<callsign>&type=<type> returns the lat,lng of the given callsign for the given callsign 
+for the given service type (am and fm right now). If there is an inexact match, gives the first one 
+  in the database; ie. 'AMU' or 'amu' match WAMU and KAMU so only one is given.
 ```
 
+####file explanations:
 
+combine_contours.py: handles sql database queries for json and callsign
+geopy_handler.py: handles geocoding api requests through geopy and Nominatim (OSM)
 
 
 
