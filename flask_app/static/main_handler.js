@@ -87,8 +87,8 @@ var selectedFeature = null;
 var hiddenContourLayer = null;
 
 
-var centerMarker = L.marker();
-var contourMarker = L.marker();
+var centerMarker = L.marker([0, 0], {"clickable":false});
+var contourMarker = L.marker([0, 0], {"clickable":false});
 
 
 function pretty_json(json){
