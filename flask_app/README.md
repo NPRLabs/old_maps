@@ -25,7 +25,9 @@ IN DEBUG MODE, SETTING CACHE TIMEOUT TO 1
   centers are included in the bounding box specified by w,s,e,n parameters.
   These latitudes and longitudes should be in decimal degrees.
   The type should be (at this point just) am and fm, for what kind of contours to specify
-Possibly in the future different kinds of contours could be specified in similar ways with different base urls
+/geocode?q=<query> : takes a URI-encoded address as a query and returns a lat,lng of the address, 
+  depends on the accuracy of the OSM geocoding api
+/callsign?cs=<callsign>&type=<type> returns the lat,lng of the given callsign for the given callsign for the given service type (am and fm right now). If there is an inexact match, gives the first one in the database; ie. 'AMU' or 'amu' match WAMU and KAMU so only one is given.
 ```
 
 
