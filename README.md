@@ -15,3 +15,15 @@ Tools for parsing drive test data (mostly for use in arc and qgis) in
 of some work to be done
 
 ###In many of the folders there are readmes with more info
+
+
+
+####requirements
+python2.7 (not 3)
+requests
+lxml
+flask (and its dependencies)
+sqlite3 (3 not 2!)
+geopy (for geocoding, tho there are other options)
+
+and many python std libs
